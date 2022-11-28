@@ -2,46 +2,7 @@ import { useState } from "react";
 import { Button, Form, Container, Stack } from "react-bootstrap";
 import "../App.css";
 import "bootstrap/dist/css/bootstrap.css";
-
-export const Auth = {
-    loginUser: (email, password) => {
-        //handle in server
-        //setcookies in server
-        let user = {
-            email,
-            password,
-        };
-
-        const myform = document.getElementById("form-login");
-
-        if (!myform.checkValidity()) {
-            //error message here
-            return;
-        }
-        console.log("form data", user);
-        fetch("/login", {
-            method: "POST",
-            body: JSON.stringify(user),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((response) => {
-                console.log("response ", response);
-                if (response.status === 200) {
-                    location.reload();
-                    return true;
-                } else throw Error("Something went wrong");
-            })
-            .catch((err) => {
-                console.log(err.message);
-                return false;
-            });
-    },
-    logout: () => {
-        //remove cookies in server
-    },
-};
+import { Auth } from "../utlis/auth";
 
 function Login() {
     const [loginState, setLoginState] = useState({
@@ -51,6 +12,14 @@ function Login() {
 
     const handleSumbit = (e) => {
         e.preventDefault();
+
+        const myform = document.getElementById("form-login");
+
+        if (!myform.checkValidity()) {
+            //error message here
+            return;
+        }
+
         console.log("email is ", loginState.email);
         if (Auth.loginUser(loginState.email, loginState.password)) {
             return true;

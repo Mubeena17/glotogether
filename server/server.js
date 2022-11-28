@@ -27,6 +27,13 @@ app.get("/user/id.json", (req, res) => {
     });
 });
 
+app.get("/logout", (req, res) => {
+    req.session = null;
+    return res.json({
+        loggedout: true,
+    });
+});
+
 app.post("/register", (req, res) => {
     let { email, password, firstname, lastname } = req.body;
     registerUser({
