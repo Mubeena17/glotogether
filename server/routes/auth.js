@@ -4,7 +4,11 @@ const router = express.Router();
 const { userEmailExist, registerUser } = require("../db");
 const { hash, compare } = require("../bcrypt");
 
-router.post("/register", (req, res) => {
+const validate = (req, res, next) => {
+    next();
+};
+
+router.post("/register", validate, (req, res) => {
     let { email, password, firstname, lastname } = req.body;
     if (!(firstname && lastname && email && password)) {
         return res.json({

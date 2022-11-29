@@ -34,3 +34,19 @@ module.exports.userEmailExist = (email) => {
             return false;
         });
 };
+
+module.exports.storePasswordRestCode = ({ email, code }) => {
+    return db
+        .query(
+            `INSERT INTO reset_code (email, code )
+             VALUES ($1, $2)
+             ON CONFLICT (email)
+             DO UPDATE SET code=$2
+             RETURNING email, created_at`,
+            [email, code]
+        )
+        .then((result) => {
+            if (result.rows.length > 0) return result.rows[0];
+            return false;
+        });
+};

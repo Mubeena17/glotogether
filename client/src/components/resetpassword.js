@@ -13,18 +13,12 @@ function ResetPassword() {
         NewPassword: "",
     });
     const handleSumbitEmail = () => {
-        // return Reset.registerUser(
-        //     registrationState.email,
-        //     registrationState.password,
-        //     registrationState.firstname,
-        //     registrationState.lastname
-        // ).then((res) => {
-        //     if (res) {
-        //         location.reload();
-        //     }
-        // });
-
-        setResetState({ ...resetState, view: 2 });
+        return Reset.resetStart(resetState.email).then((res) => {
+            console.log("res from ", res);
+            if (res) {
+                setResetState({ ...resetState, view: 2 });
+            }
+        });
     };
     const handleSumbitPassword = () => {
         setResetState({ ...resetState, view: 3 });

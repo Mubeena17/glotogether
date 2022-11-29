@@ -1,9 +1,17 @@
 export const Reset = {
     //checking cookies
-    resetStart: () => {
-        fetch("/password/reset/start")
+    resetStart: (email) => {
+        let user = { email };
+        return fetch("/password/reset/start", {
+            method: "POST",
+            body: JSON.stringify(user),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
             .then((result) => result.json())
-            .then(() => {
+            .then((result) => {
+                console.log("hello result ", result);
                 return true;
             });
     },
