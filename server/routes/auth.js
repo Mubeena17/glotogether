@@ -30,6 +30,7 @@ router.post("/register", (req, res) => {
         })
         .then((user) => {
             req.session.user_id = user.id;
+            //stop passing password
             return res.json({
                 success: true,
                 message: "registration successful",
@@ -80,10 +81,11 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/user/id.json", (req, res) => {
-    //console.log(req.session.user_id);
-    return res.json({
-        user_id: req.session.user_id,
-    });
+    if (req.session.user_id)
+        return res.json({
+            user_id: req.session.user_id,
+        });
+    return res.json({});
 });
 
 router.get("/logout", (req, res) => {
