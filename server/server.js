@@ -7,6 +7,7 @@ const cookieSession = require("cookie-session");
 require("dotenv").config();
 const authRouter = require("./routes/auth");
 const resetRouter = require("./routes/reset");
+const userInfoRouter = require("./routes/user");
 const { PORT = 3001, SECRET } = process.env;
 
 app.use(compression());
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(authRouter);
 app.use(resetRouter);
+app.use(userInfoRouter);
 
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));

@@ -72,3 +72,13 @@ module.exports.updatePassword = ({ email, password }) => {
         })
         .catch((err) => console.log(err));
 };
+
+module.exports.getUserInfo = (userid) => {
+    return db
+        .query(`SELECT * FROM users WHERE id=$1`, [userid])
+        .then((result) => {
+            if (result.rows.length > 0) return result.rows[0];
+            return false;
+        })
+        .catch((err) => console.log(err));
+};
