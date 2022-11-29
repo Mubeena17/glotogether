@@ -4,7 +4,7 @@ export const Auth = {
         fetch("/user/id.json")
             .then((result) => result.json())
             .then((user) => {
-                //console.log(userInfo);
+                console.log(user);
                 if (user.user_id) {
                     return true;
                 } else {
@@ -40,6 +40,7 @@ export const Auth = {
                 return false;
             });
     },
+
     logout: () => {
         fetch("/logout").then(() => {
             location.reload();
@@ -48,8 +49,6 @@ export const Auth = {
     },
 
     registerUser: (email, password, firstname, lastname) => {
-        //handle in server
-        //setcookies in server
         let user = {
             email,
             password,
@@ -57,7 +56,7 @@ export const Auth = {
             lastname,
         };
 
-        fetch("/register", {
+        return fetch("/register", {
             method: "POST",
             body: JSON.stringify(user),
             headers: {
@@ -65,8 +64,9 @@ export const Auth = {
             },
         })
             .then((response) => {
+                console.log("################RESPONSE", response);
                 if (response.status === 200) {
-                    location.reload();
+                    console.log("################", response);
                     return true;
                 } else throw Error("Something went wrong");
             })
