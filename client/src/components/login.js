@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button, Form, Container, Stack } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "../App.css";
 import "bootstrap/dist/css/bootstrap.css";
 import { Auth } from "../utlis/auth";
@@ -87,6 +88,7 @@ function Login() {
                         Submit
                     </Button>
                 </Form>
+                <Link to="/reset-password">Click here to reset password</Link>
             </Stack>
         </Container>
     );
