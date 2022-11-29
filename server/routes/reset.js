@@ -1,8 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const { userEmailExist, storePasswordRestCode } = require("../db");
+const {
+    userEmailExist,
+    storePasswordRestCode,
+    verifyPasswordRestCode,
+    updatePassword,
+} = require("../db");
 const code = require("../secretcode");
 const { ses } = require("../ses");
+const { hash, compare } = require("../bcrypt");
 
 router.post("/password/reset/start", (req, res) => {
     let { email } = req.body;
@@ -14,11 +20,10 @@ router.post("/password/reset/start", (req, res) => {
         })
         .then((resetData) => {
             //send email
-            console.log(2222222);
+
             return sendEmail(resetData);
         })
         .then((isCodeSend) => {
-            console.log(3333333);
             if (isCodeSend) {
                 return res.json({
                     success: true,
@@ -30,6 +35,41 @@ router.post("/password/reset/start", (req, res) => {
             return res.json({
                 success: false,
                 message: err.message || "something went worng",
+            });
+        });
+});
+
+router.post("/password/reset/verify", (req, res) => {
+    let { email, code, password } = req.body;
+    console.log("update verify req.body", req.body);
+    verifyPasswordRestCode({ email })
+        .then((dbcode) => {
+            console.log(dbcode, code);
+            if (dbcode.code === code) {
+                console.log("code matches");
+                return hash(password);
+            } else throw Error("Code doesnt match");
+        })
+        .then((password) => {
+            console.log("hashing password");
+            return updatePassword({ email, password });
+        })
+        .then((result) => {
+            console.log("update password ", result);
+            if (result) {
+                console.log("pass updated");
+                return res.json({
+                    success: true,
+                    message: "password updated",
+                });
+            } else throw Error("password not updated");
+        })
+        .catch((err) => {
+            console.log("erre ", err.message);
+            return res.json({
+                success: false,
+                message:
+                    err.message || "something went wrong in password update",
             });
         });
 });

@@ -50,3 +50,25 @@ module.exports.storePasswordRestCode = ({ email, code }) => {
             return false;
         });
 };
+
+module.exports.verifyPasswordRestCode = ({ email }) => {
+    return db
+        .query(`SELECT code FROM reset_code WHERE email=$1`, [email])
+        .then((result) => {
+            if (result.rows.length > 0) return result.rows[0];
+            return false;
+        });
+};
+
+module.exports.updatePassword = ({ email, password }) => {
+    return db
+        .query(`UPDATE users SET password=$1 WHERE email=$2 RETURNING *`, [
+            password,
+            email,
+        ])
+        .then((result) => {
+            if (result.rows.length > 0) return result.rows[0];
+            return false;
+        })
+        .catch((err) => console.log(err));
+};

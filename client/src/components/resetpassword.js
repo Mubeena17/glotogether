@@ -10,7 +10,7 @@ function ResetPassword() {
         view: 1,
         email: "",
         code: "",
-        NewPassword: "",
+        newPassword: "",
     });
     const handleSumbitEmail = () => {
         return Reset.resetStart(resetState.email).then((res) => {
@@ -21,7 +21,16 @@ function ResetPassword() {
         });
     };
     const handleSumbitPassword = () => {
-        setResetState({ ...resetState, view: 3 });
+        return Reset.resetVerify(
+            resetState.email,
+            resetState.code,
+            resetState.newPassword
+        ).then((res) => {
+            console.log("res from ", res);
+            if (res) {
+                setResetState({ ...resetState, view: 3 });
+            }
+        });
     };
     const currentview = () => {
         switch (resetState.view) {
