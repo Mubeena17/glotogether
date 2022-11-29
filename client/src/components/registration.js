@@ -1,49 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Form, Container, Stack } from "react-bootstrap";
+import { Auth } from "../utlis/auth";
 import "../App.css";
 import "bootstrap/dist/css/bootstrap.css";
-
-export const Auth = {
-    registerUser: (email, password, firstname, lastname) => {
-        //handle in server
-        //setcookies in server
-        let user = {
-            email,
-            password,
-            firstname,
-            lastname,
-        };
-
-        const myform = document.getElementById("form-registration");
-
-        if (!myform.checkValidity()) {
-            //error message here
-            return;
-        }
-
-        fetch("/register", {
-            method: "POST",
-            body: JSON.stringify(user),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((response) => {
-                if (response.status === 200) {
-                    location.reload();
-                    return true;
-                } else throw Error("Something went wrong");
-            })
-            .catch((err) => {
-                console.log(err.message);
-                return false;
-            });
-    },
-    logout: () => {
-        //remove cookies in server
-    },
-};
 
 function Registration() {
     const [registrationState, setRegistrationState] = useState({
@@ -54,19 +14,16 @@ function Registration() {
     });
 
     const handleSumbit = () => {
-        if (
-            Auth.registerUser(
-                registrationState.email,
-                registrationState.password,
-                registrationState.firstname,
-                registrationState.lastname
-            )
-        ) {
-            return;
-        } else {
-            // display error
-            return;
-        }
+        return Auth.registerUser(
+            registrationState.email,
+            registrationState.password,
+            registrationState.firstname,
+            registrationState.lastname
+        ).then((res) => {
+            if (res) {
+                location.reload();
+            }
+        });
     };
 
     return (
@@ -136,7 +93,6 @@ function Registration() {
 
                     <Button
                         variant="primary"
-                        type="submit"
                         disabled={
                             !registrationState.email ||
                             !registrationState.password ||
