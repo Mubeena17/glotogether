@@ -14,20 +14,13 @@ function Login() {
     const handleSumbit = (e) => {
         e.preventDefault();
 
-        const myform = document.getElementById("form-login");
-
-        if (!myform.checkValidity()) {
-            //error message here
-            return;
-        }
-
-        console.log("email is ", loginState.email);
-        if (Auth.loginUser(loginState.email, loginState.password)) {
-            return true;
-        } else {
-            // display error
-            return false;
-        }
+        return Auth.loginUser(loginState.email, loginState.password).then(
+            (res) => {
+                if (res) {
+                    location.reload();
+                }
+            }
+        );
     };
 
     return (

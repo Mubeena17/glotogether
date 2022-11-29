@@ -50,33 +50,28 @@ router.post("/register", validate, (req, res) => {
 });
 
 router.post("/login", (req, res) => {
+    let userid;
     const { email, password } = req.body;
     userEmailExist(email)
         .then((user) => {
             if (user) {
+                userid = user.id;
                 return compare(password, user.password);
-            } else {
-                return res.json({
-                    success: false,
-                    message: "No user with email exist",
-                });
-            }
+            } else throw Error("No user with email exist");
         })
         .then((result) => {
-            if (result) {
-                req.session.user_id = user.id;
-                return res.json({
-                    success: true,
-                    message: "registration successful",
-                });
-            } else {
-                return res.json({
-                    success: false,
-                    message: "Wrong password",
-                });
-            }
+            if (result) return true;
+            else throw Error("Wrong password");
         })
-        .catch(() => {
+        .then((result) => {
+            req.session.user_id = userid;
+
+            return res.json({
+                success: true,
+                message: "registration successful",
+            });
+        })
+        .catch((err) => {
             return res.json({
                 success: false,
                 message: "login failed!",

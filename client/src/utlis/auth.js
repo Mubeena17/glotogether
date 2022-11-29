@@ -21,7 +21,7 @@ export const Auth = {
             password,
         };
 
-        fetch("/login", {
+        return fetch("/login", {
             method: "POST",
             body: JSON.stringify(user),
             headers: {
@@ -29,9 +29,9 @@ export const Auth = {
             },
         })
             .then((response) => {
-                console.log("response ", response);
+                console.log("################RESPONSE", response);
                 if (response.status === 200) {
-                    location.reload();
+                    console.log("################", response);
                     return true;
                 } else throw Error("Something went wrong");
             })
