@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client";
 import Welcome from "./components/welcome";
+import App from "./components/app";
 
 import { Navbar, Container, Button } from "react-bootstrap";
 import { Auth } from "./utlis/auth";
@@ -29,7 +30,7 @@ fetch("/user/id.json")
                 </Navbar>
 
                 {!user.user_id && <Welcome />}
-                {user.user_id && <h1>hello world</h1>}
+                {user.user_id && <App id={user.user_id} />}
             </div>
         );
     });
