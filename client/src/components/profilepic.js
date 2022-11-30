@@ -1,12 +1,11 @@
 import { Image } from "react-bootstrap";
 
 function Profilepic(props) {
-    console.log("props", props);
     return (
         <>
             <Image
-                width="80px"
-                height="80px"
+                width={props.size == "large" ? "200px" : "80px"}
+                height={props.size == "large" ? "200px" : "80px"}
                 className="border border-dark"
                 src={props.src}
                 roundedCircle
