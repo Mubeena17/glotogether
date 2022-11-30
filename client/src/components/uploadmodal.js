@@ -1,6 +1,37 @@
 import { Form, Button, Modal } from "react-bootstrap";
+import { Upload } from "../utlis/upload";
+import { useState } from "react";
 
 function Uploadmodal(props) {
+    const [selectedFile, setSelectedFile] = useState();
+
+    const changeHandler = (event) => {
+        setSelectedFile(event.target.files[0]);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log("clcicked");
+
+        const formData = new FormData();
+
+        formData.append("photo", selectedFile);
+
+        formData.append("id", props.user.id);
+
+        console.log("form data", ...formData);
+        console.log("id", props.user.id);
+        console.log("file", selectedFile);
+
+        return Upload.profilepic(formData).then((response) => {
+            console.log("respindd", response);
+            if (response.success) {
+                props.change(response.profileurl);
+                props.onHide();
+            }
+        });
+    };
+
     return (
         <>
             <Modal show={props.show} onHide={props.onHide}>
@@ -10,10 +41,17 @@ function Uploadmodal(props) {
                 <Form>
                     <Modal.Body>
                         <Form.Group controlId="formFile" className="mb-3">
-                            <Form.Label>Default file input example</Form.Label>
-                            <Form.Control type="file" />
+                            <Form.Label>Upload a a profile pic</Form.Label>
+                            <Form.Control
+                                type="file"
+                                onChange={changeHandler}
+                            />
                         </Form.Group>
-                        <Button variant="secondary" onClick={props.onHide}>
+                        <Button
+                            variant="secondary"
+                            type="sumbit"
+                            onClick={handleSubmit}
+                        >
                             Upload
                         </Button>
                     </Modal.Body>

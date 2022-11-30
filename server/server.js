@@ -13,6 +13,7 @@ const { PORT = 3001, SECRET } = process.env;
 app.use(compression());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
+app.use(express.static(path.join(__dirname, "uploads")));
 app.use(
     cookieSession({
         secret: "Im hungry",
@@ -27,6 +28,7 @@ app.use(resetRouter);
 app.use(userInfoRouter);
 
 app.get("*", function (req, res) {
+    console.log();
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 

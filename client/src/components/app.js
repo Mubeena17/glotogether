@@ -7,13 +7,21 @@ import { Button, Modal, Stack, Form } from "react-bootstrap";
 function App(props) {
     const [userState, userSetState] = useState({
         user: {},
+        profileurl: "/images/profile.png",
     });
-
+    //modal state
     const [show, setShow] = useState(false);
-
+    // modal close and open
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const changeprofile = (profileurl) => {
+        console.log("WERWEWR", profileurl);
+        userSetState({
+            ...userState,
+            profileurl: profileurl,
+        });
+    };
     //componentDidmount
     useEffect(() => {
         fetch(`/user/info/${props.id}`)
@@ -22,6 +30,7 @@ function App(props) {
                 userSetState({
                     ...userState,
                     user: user,
+                    profileurl: user.profileurl || userState.profileurl,
                 });
             });
     }, [props.id]);
@@ -32,9 +41,18 @@ function App(props) {
                 <div className="me-auto">
                     <Logo />
                 </div>
-                <Profilepic onShow={handleShow} user={userState.user} />
+                <Profilepic
+                    src={userState.profileurl}
+                    onShow={handleShow}
+                    user={userState.user}
+                />
             </Stack>
-            <Uploadmodal show={show} onHide={handleClose} />
+            <Uploadmodal
+                show={show}
+                change={changeprofile}
+                onHide={handleClose}
+                user={userState.user}
+            />
         </>
     );
 }

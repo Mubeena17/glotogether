@@ -82,3 +82,16 @@ module.exports.getUserInfo = (userid) => {
         })
         .catch((err) => console.log(err));
 };
+
+module.exports.updateProfilepic = ({ id, profileurl }) => {
+    return db
+        .query(`UPDATE users SET profileurl=$1 WHERE id=$2 RETURNING *`, [
+            profileurl,
+            id,
+        ])
+        .then((result) => {
+            if (result.rows.length > 0) return result.rows[0];
+            return false;
+        })
+        .catch((err) => console.log(err));
+};
