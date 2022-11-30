@@ -17,6 +17,7 @@ export default function Profile(props) {
                         {props.user.lastname}
                     </h1>
                     <Bioeditor
+                        id={props.user.id}
                         bio={props.bio || props.user.bio}
                         bioUpdated={props.bioUpdated}
                     />

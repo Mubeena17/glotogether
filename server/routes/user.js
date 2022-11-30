@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getUserInfo, updateProfilepic } = require("../db");
+const { getUserInfo, updateProfilepic, updateBio } = require("../db");
 
 const { uploader } = require("../uploadmiddleware");
 const fs = require("fs");
@@ -13,6 +13,27 @@ router.get("/user/info/:id", (req, res) => {
     getUserInfo(req.params.id).then((user) => {
         return res.json(user);
     });
+});
+
+router.post("/user/updatebio", (req, res) => {
+    console.log("9999999", req.body);
+    if (req.body) {
+        updateBio({ id: req.body.id, bio: req.body.bio })
+            .then((row) => {
+                if (row) {
+                    return res.json({
+                        success: true,
+                        message: "bio updated",
+                    });
+                } else throw Error("No bio updated");
+            })
+            .catch((err) =>
+                res.json({
+                    success: true,
+                    message: err.message,
+                })
+            );
+    }
 });
 
 router.post("/upload/profilepic", uploader.single("photo"), (req, res) => {

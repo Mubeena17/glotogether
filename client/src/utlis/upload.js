@@ -18,6 +18,28 @@ export const Upload = {
                 return;
             });
     },
+
+    bioUpdate: (id, bio) => {
+        let user = { id, bio };
+        return fetch("/user/updatebio", {
+            method: "POST",
+            body: JSON.stringify(user),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => {
+                if (response.status === 200) return response.json();
+                else throw Error("Something went wrong");
+            })
+            .then((result) => {
+                return result;
+            })
+            .catch((err) => {
+                console.log(err.message);
+                return;
+            });
+    },
 };
 
 //{success: true,

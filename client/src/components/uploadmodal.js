@@ -11,17 +11,12 @@ function Uploadmodal(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("clcicked");
 
         const formData = new FormData();
 
         formData.append("photo", selectedFile);
 
         formData.append("id", props.user.id);
-
-        console.log("form data", ...formData);
-        console.log("id", props.user.id);
-        console.log("file", selectedFile);
 
         return Upload.profilepic(formData).then((response) => {
             console.log("respindd", response);

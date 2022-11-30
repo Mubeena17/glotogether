@@ -95,3 +95,13 @@ module.exports.updateProfilepic = ({ id, profileurl }) => {
         })
         .catch((err) => console.log(err));
 };
+
+module.exports.updateBio = ({ id, bio }) => {
+    return db
+        .query(`UPDATE users SET bio=$1 WHERE id=$2 RETURNING *`, [bio, id])
+        .then((result) => {
+            if (result.rows.length > 0) return result.rows[0];
+            return false;
+        })
+        .catch((err) => console.log(err));
+};
