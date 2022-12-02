@@ -105,3 +105,22 @@ module.exports.updateBio = ({ id, bio }) => {
         })
         .catch((err) => console.log(err));
 };
+
+module.exports.getUserList = (query) => {
+    let sql;
+    let value = [];
+    if (query == 0) {
+        sql =
+            "SELECT profileurl, firstname, lastname, id FROM users ORDER BY created_at DESC LIMIT 3";
+    } else {
+        sql = `SELECT profileurl, firstname, lastname, id FROM users WHERE firstname ILIKE $1`;
+        value = [query + "%"];
+    }
+    return db
+        .query(sql, value)
+        .then((result) => {
+            if (result.rows.length > 0) return result.rows;
+            return false;
+        })
+        .catch((err) => console.log(err));
+};

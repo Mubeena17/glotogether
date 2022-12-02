@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { getUserInfo, updateProfilepic, updateBio } = require("../db");
+const {
+    getUserInfo,
+    updateProfilepic,
+    updateBio,
+    getUserList,
+} = require("../db");
 
 const { uploader } = require("../uploadmiddleware");
 const fs = require("fs");
@@ -85,6 +90,13 @@ router.post("/upload/profilepic", uploader.single("photo"), (req, res) => {
             message: "File upload failed",
         });
     }
+});
+
+router.get("/userlist/:query", (req, res) => {
+    console.log("query ", req.params.query);
+    getUserList(req.params.query).then((user) => {
+        return res.json(user);
+    });
 });
 
 module.exports = router;

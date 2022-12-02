@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import "../App.css";
 import "bootstrap/dist/css/bootstrap.css";
 import { Auth } from "../utlis/auth";
+import { useNavigate } from "react-router";
 
 function Login() {
     const [loginState, setLoginState] = useState({
@@ -17,7 +18,7 @@ function Login() {
         return Auth.loginUser(loginState.email, loginState.password).then(
             (res) => {
                 if (res) {
-                    location.reload();
+                    location.replace("/");
                 }
             }
         );
