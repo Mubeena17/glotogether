@@ -41,20 +41,24 @@ export default function Findpeople() {
                 <Card key={user.id} style={{ width: "20rem" }}>
                     <Card.Body>
                         <Container>
-                            <Row>
-                                <Col>
-                                    <Image
-                                        height="100px"
-                                        src={
-                                            user.profileurl ||
-                                            "/images/profile.png"
-                                        }
-                                    />
-                                </Col>
-                                <Col>
-                                    <Card.Title>{user.firstname}</Card.Title>
-                                </Col>
-                            </Row>
+                            <Card.Link href={`/otherprofile/${user.id}`}>
+                                <Row>
+                                    <Col>
+                                        <Image
+                                            height="100px"
+                                            src={
+                                                user.profileurl ||
+                                                "/images/profile.png"
+                                            }
+                                        />
+                                    </Col>
+                                    <Col>
+                                        <Card.Title>
+                                            {user.firstname}
+                                        </Card.Title>
+                                    </Col>
+                                </Row>
+                            </Card.Link>
                         </Container>
                     </Card.Body>
                 </Card>

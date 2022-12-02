@@ -20,8 +20,19 @@ router.get("/user/info/:id", (req, res) => {
     });
 });
 
+router.get("/user/:id", (req, res) => {
+    if (req.session.user_id == req.params.id) {
+        return res.json({
+            self: true,
+        });
+    } else {
+        getUserInfo(req.params.id).then((user) => {
+            return res.json({ self: false, user });
+        });
+    }
+});
+
 router.post("/user/updatebio", (req, res) => {
-    console.log("9999999", req.body);
     if (req.body) {
         updateBio({ id: req.body.id, bio: req.body.bio })
             .then((row) => {
