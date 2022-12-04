@@ -8,21 +8,21 @@ export default function Otherprofile() {
     const [userState, setUserState] = useState({});
     const navigate = useNavigate();
 
+    const getUserInfo = async () => {
+        let userinfo = await fetch(`/user/${id}`);
+        let data = await userinfo.json();
+        if (data.self) {
+            navigate("/");
+        } else if (Object.keys(data.user).length == 0) {
+            navigate("/", { replace: true });
+        } else {
+            setUserState(data.user);
+        }
+    };
+
     //componentDidmount
     useEffect(() => {
-        fetch(`/user/${id}`)
-            .then((userinfo) => {
-                return userinfo.json();
-            })
-            .then((data) => {
-                if (data.self) {
-                    navigate("/");
-                } else if (Object.keys(data.user).length == 0) {
-                    navigate("/", { replace: true });
-                } else {
-                    setUserState(data.user);
-                }
-            });
+        getUserInfo();
     }, [id]);
 
     return (

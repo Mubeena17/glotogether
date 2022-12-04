@@ -13,17 +13,16 @@ function Registration() {
         lastname: "",
     });
 
-    const handleSumbit = () => {
-        return Auth.registerUser(
+    const handleSumbit = async () => {
+        let res = await Auth.registerUser(
             registrationState.email,
             registrationState.password,
             registrationState.firstname,
             registrationState.lastname
-        ).then((res) => {
-            if (res) {
-                location.reload();
-            }
-        });
+        );
+        if (res) {
+            location.reload();
+        }
     };
 
     return (

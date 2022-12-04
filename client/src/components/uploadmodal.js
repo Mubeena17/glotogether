@@ -9,7 +9,7 @@ function Uploadmodal(props) {
         setSelectedFile(event.target.files[0]);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const formData = new FormData();
@@ -18,13 +18,11 @@ function Uploadmodal(props) {
 
         formData.append("id", props.user.id);
 
-        return Upload.profilepic(formData).then((response) => {
-            console.log("respindd", response);
-            if (response.success) {
-                props.change(response.profileurl);
-                props.onHide();
-            }
-        });
+        let response = await Upload.profilepic(formData);
+        if (response.success) {
+            props.change(response.profileurl);
+            props.onHide();
+        }
     };
 
     return (

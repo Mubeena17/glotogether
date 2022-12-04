@@ -6,15 +6,18 @@ export default function Findpeople() {
     const [userList, setUserList] = useState([]);
     const [queryState, setQueryState] = useState("");
 
+    const getUserList = async () => {
+        let user = await Find.getUserList(queryState);
+        if (user.length > 0) {
+            // setUserList((existingUsers) => [...existingUsers, ...user]);
+            setUserList([...user]);
+        } else {
+            setUserList([]);
+        }
+    };
+
     useEffect(() => {
-        Find.getUserList(queryState).then((user) => {
-            if (user.length > 0) {
-                // setUserList((existingUsers) => [...existingUsers, ...user]);
-                setUserList([...user]);
-            } else {
-                setUserList([]);
-            }
-        });
+        getUserList();
     }, [queryState]);
 
     return (

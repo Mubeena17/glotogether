@@ -26,25 +26,31 @@ export default function ProfileApp(props) {
     };
 
     const bioUpdated = (biotext) => {
-        userSetState({
+        console.log("BIO TEXT ", biotext);
+        userSetState((userState) => ({
             ...userState,
             bio: biotext,
-        });
+        }));
+    };
+
+    const getInfo = async () => {
+        let userinfo = await fetch(`/user/info/${props.id}`);
+        let user = await userinfo.json();
+        if (user)
+            userSetState({
+                ...userState,
+                user: user,
+                bio: user.bio,
+                profileurl: user.profileurl || userState.profileurl,
+            });
     };
 
     //componentDidmount
     useEffect(() => {
-        fetch(`/user/info/${props.id}`)
-            .then((userinfo) => userinfo.json())
-            .then((user) => {
-                userSetState({
-                    ...userState,
-                    user: user,
-                    profileurl: user.profileurl || userState.profileurl,
-                });
-            });
+        getInfo();
     }, [props.id]);
 
+    console.log(userState);
     return (
         <>
             <Stack direction="horizontal" gap={3}>

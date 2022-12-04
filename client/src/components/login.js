@@ -12,16 +12,12 @@ function Login() {
         password: "",
     });
 
-    const handleSumbit = (e) => {
+    const handleSumbit = async (e) => {
         e.preventDefault();
-
-        return Auth.loginUser(loginState.email, loginState.password).then(
-            (res) => {
-                if (res) {
-                    location.replace("/");
-                }
-            }
-        );
+        let res = Auth.loginUser(loginState.email, loginState.password);
+        if (res) {
+            location.replace("/");
+        }
     };
 
     return (

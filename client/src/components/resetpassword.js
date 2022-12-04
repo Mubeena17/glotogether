@@ -12,25 +12,22 @@ function ResetPassword() {
         code: "",
         newPassword: "",
     });
-    const handleSumbitEmail = () => {
-        return Reset.resetStart(resetState.email).then((res) => {
-            console.log("res from ", res);
-            if (res) {
-                setResetState({ ...resetState, view: 2 });
-            }
-        });
+    const handleSumbitEmail = async () => {
+        let res = await Reset.resetStart(resetState.email);
+        if (res) {
+            setResetState({ ...resetState, view: 2 });
+        }
     };
-    const handleSumbitPassword = () => {
-        return Reset.resetVerify(
+    const handleSumbitPassword = async () => {
+        let res = await Reset.resetVerify(
             resetState.email,
             resetState.code,
             resetState.newPassword
-        ).then((res) => {
-            console.log("res from ", res);
-            if (res) {
-                setResetState({ ...resetState, view: 3 });
-            }
-        });
+        );
+
+        if (res) {
+            setResetState({ ...resetState, view: 3 });
+        }
     };
     const currentview = () => {
         switch (resetState.view) {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Stack, Form, Row, Col } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { Upload } from "../utlis/upload";
 
 export default function Bioeditor(props) {
@@ -9,16 +9,14 @@ export default function Bioeditor(props) {
         text: props.bio,
     });
 
-    const handleSubmit = () => {
-        console.log("clcicked now");
+    const handleSubmit = async () => {
+        let response = await Upload.bioUpdate(props.id, biotext.text);
 
-        return Upload.bioUpdate(props.id, biotext.text).then((response) => {
-            console.log("respindd", response);
-            if (response.success) {
-                props.bioUpdated(biotext.text);
-                setEditBio(false);
-            }
-        });
+        if (response.success) {
+            console.log("$$$$", biotext.text);
+            setEditBio(false);
+            props.bioUpdated(biotext.text);
+        }
     };
 
     useEffect(() => {

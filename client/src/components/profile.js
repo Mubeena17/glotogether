@@ -1,9 +1,9 @@
-import { useState } from "react";
 import Profilepic from "./profilepic";
 import Bioeditor from "./bioeditor";
-import { Button, Modal, Stack, Form, Row, Col } from "react-bootstrap";
+import { Form, Row, Col } from "react-bootstrap";
 
 export default function Profile(props) {
+    console.log("profile props", props);
     return (
         <Form>
             <Row>
@@ -18,7 +18,7 @@ export default function Profile(props) {
                     </h1>
                     <Bioeditor
                         id={props.user.id}
-                        bio={props.bio || props.user.bio}
+                        bio={props.bio}
                         bioUpdated={props.bioUpdated}
                     />
                 </Col>
