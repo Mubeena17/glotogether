@@ -57,7 +57,7 @@ export default function Bioeditor(props) {
             )}
 
             {!props.bio && !Editbio && (
-                <div onClick={openEditbio}>Add you bio now</div>
+                <div onClick={openEditbio}>Add your bio now</div>
             )}
         </>
     );
