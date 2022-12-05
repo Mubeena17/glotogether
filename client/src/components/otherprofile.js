@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import Profilepic from "./profilepic";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router";
+import { Friendship } from "../utlis/friendship";
 
 export default function Otherprofile() {
     const { id } = useParams();
     const [userState, setUserState] = useState({});
     const navigate = useNavigate();
+    const [friendshipState, setFriendshipState] = useState(false);
+    const [isAccepted, setisAccepted] = useState(false);
+    const [amIsender, setIamSender] = useState(false);
 
     const getUserInfo = async () => {
         let userinfo = await fetch(`/user/${id}`);
@@ -19,10 +23,43 @@ export default function Otherprofile() {
             setUserState(data.user);
         }
     };
+    const getFriendshipInfo = async () => {
+        let response = await Friendship.getStatus(id);
+        console.log("%%%RESPONSE%%% ", response);
+        //0 rows
+
+        setFriendshipState(response.status);
+        setisAccepted(response.isAccepted);
+        setIamSender(response.amIsender);
+
+        console.log("STATE", friendshipState, isAccepted, amIsender);
+    };
+
+    const handleSendFriendRequest = async () => {
+        let response = await Friendship.sendFriendrequest(id, "POST");
+        if (response.status) {
+            setFriendshipState(response.status);
+        }
+    };
+    const handleAcceptFriendRequest = async () => {
+        let response = await Friendship.sendFriendrequest(id, "PUT");
+        if (response.status) {
+            setFriendshipState(response.status);
+        }
+    };
+
+    const handleDeleteRequest = async () => {
+        let method = "DELETE";
+        let response = await Friendship.sendFriendrequest(id, method);
+        if (response.status) {
+            setFriendshipState(false);
+        }
+    };
 
     //componentDidmount
     useEffect(() => {
         getUserInfo();
+        getFriendshipInfo();
     }, [id]);
 
     return (
@@ -37,6 +74,28 @@ export default function Otherprofile() {
                     {userState.lastname}
                 </h1>
                 <div> {userState.bio || "No bio"}</div>
+                {!friendshipState && (
+                    <Button onClick={handleSendFriendRequest}>
+                        Send Request
+                    </Button>
+                )}
+                {friendshipState && !isAccepted && amIsender && (
+                    <Button onClick={handleDeleteRequest}>
+                        Cancel Request
+                    </Button>
+                )}
+                {friendshipState && isAccepted && (
+                    <Button onClick={handleDeleteRequest}>Unfriend</Button>
+                )}
+
+                {friendshipState && !amIsender && (
+                    <>
+                        <Button onClick={handleAcceptFriendRequest}>
+                            Accept
+                        </Button>
+                        <Button onClick={handleDeleteRequest}>Decline</Button>
+                    </>
+                )}
             </Col>
         </Row>
     );

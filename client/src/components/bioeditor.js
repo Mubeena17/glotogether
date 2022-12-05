@@ -13,7 +13,6 @@ export default function Bioeditor(props) {
         let response = await Upload.bioUpdate(props.id, biotext.text);
 
         if (response.success) {
-            console.log("$$$$", biotext.text);
             setEditBio(false);
             props.bioUpdated(biotext.text);
         }
