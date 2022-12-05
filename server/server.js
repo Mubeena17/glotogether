@@ -8,6 +8,7 @@ require("dotenv").config();
 const authRouter = require("./routes/auth");
 const resetRouter = require("./routes/reset");
 const userInfoRouter = require("./routes/user");
+const friendshipRouter = require("./routes/friendship");
 const { PORT = 3001, SECRET } = process.env;
 
 app.use(compression());
@@ -26,6 +27,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(authRouter);
 app.use(resetRouter);
 app.use(userInfoRouter);
+app.use(friendshipRouter);
 
 app.get("*", function (req, res) {
     console.log();
