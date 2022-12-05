@@ -43,9 +43,10 @@ export default function Otherprofile() {
     };
     const handleAcceptFriendRequest = async () => {
         let response = await Friendship.sendFriendrequest(id, "PUT");
-        if (response.status) {
-            setFriendshipState(response.status);
-        }
+        console.log("Hello res", response);
+        setFriendshipState(response.status);
+        setisAccepted(response.isAccepted);
+        setIamSender(response.amIsender);
     };
 
     const handleDeleteRequest = async () => {
@@ -84,17 +85,17 @@ export default function Otherprofile() {
                         Cancel Request
                     </Button>
                 )}
-                {friendshipState && isAccepted && (
-                    <Button onClick={handleDeleteRequest}>Unfriend</Button>
-                )}
 
-                {friendshipState && !amIsender && (
+                {friendshipState && !amIsender && !isAccepted && (
                     <>
                         <Button onClick={handleAcceptFriendRequest}>
                             Accept
                         </Button>
                         <Button onClick={handleDeleteRequest}>Decline</Button>
                     </>
+                )}
+                {friendshipState && isAccepted && (
+                    <Button onClick={handleDeleteRequest}>Unfriend</Button>
                 )}
             </Col>
         </Row>

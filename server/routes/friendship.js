@@ -12,20 +12,27 @@ const {
 router.get("/friendship/:id", async (req, res) => {
     let sender = req.session.user_id;
     let recipient = req.params.id;
-    console.log("get");
     let response = await findFriendshipStatus(sender, recipient);
-    if (response) {
-        res.json({
+
+    console.log("get", response);
+    console.log("Sender id ", response.sender_id);
+    console.log("session id ", req.session.user_id);
+
+    //no database entry
+    if (!response) {
+        return res.json({
+            status: false,
+            isAccepted: false,
+            amIsender: true,
+        });
+    } else {
+        return res.json({
             status: true,
-            response: response,
             isAccepted: response.accepted,
             amIsender:
                 req.session.user_id === response.sender_id ? true : false,
         });
-    } else
-        return res.json({
-            status: false,
-        });
+    }
 });
 
 router.post("/friendship/:id", async (req, res) => {
@@ -65,12 +72,14 @@ router.put("/friendship/:id", async (req, res) => {
     let sender = req.session.user_id;
     let recipient = req.params.id;
     console.log("Put");
-    let response = await acceptFriendRequest(sender, recipient, true);
+    let response = await acceptFriendRequest(sender, recipient);
     console.log(response);
     if (response) {
         res.json({
             status: true,
-            response: response.rows,
+            isAccepted: response.accepted,
+            amIsender:
+                req.session.user_id === response.sender_id ? true : false,
         });
     } else
         return res.json({

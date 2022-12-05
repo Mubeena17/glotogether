@@ -174,13 +174,13 @@ module.exports.deleteFriendRequest = (sender, recipient) => {
         });
 };
 
-module.exports.acceptFriendRequest = (sender, recipient, accept) => {
+module.exports.acceptFriendRequest = (sender, recipient) => {
     return db
         .query(
-            `UPDATE friendships SET bio=$3
+            `UPDATE friendships SET accepted=true
             WHERE (sender_id=$1 AND recipient_id=$2)
-            OR (sender_id=$2 AND recipient_id=$1)`,
-            [sender, recipient, accept]
+            OR (sender_id=$2 AND recipient_id=$1) RETURNING *`,
+            [sender, recipient]
         )
         .then((result) => {
             return result.rows[0];

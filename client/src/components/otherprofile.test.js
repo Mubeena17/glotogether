@@ -40,7 +40,7 @@ test("renders send request button when response false (friendshipState) ", async
 
     let id = "3";
     //when
-    const { container, getByText } = render(
+    const { container, getByText, queryByText } = render(
         <MemoryRouter initialEntries={["/otherprofile/3"]}>
             <Routes>
                 <Route
@@ -54,6 +54,10 @@ test("renders send request button when response false (friendshipState) ", async
     //then
     await waitFor(() => {
         expect(getByText(/Send/)).toBeInTheDocument();
+        expect(queryByText(/Accept/)).not.toBeInTheDocument();
+        expect(queryByText(/Decline/)).not.toBeInTheDocument();
+        expect(queryByText(/Cancel/)).not.toBeInTheDocument();
+        expect(queryByText(/Unfriend/)).not.toBeInTheDocument();
     });
 });
 
@@ -84,7 +88,7 @@ test("renders Cancel request button when status true and amIsender true ) ", asy
 
     let id = "3";
     //when
-    const { container, getByText } = render(
+    const { container, getByText, queryByText } = render(
         <MemoryRouter initialEntries={["/otherprofile/3"]}>
             <Routes>
                 <Route
@@ -98,6 +102,10 @@ test("renders Cancel request button when status true and amIsender true ) ", asy
     //then
     await waitFor(() => {
         expect(getByText(/Cancel/)).toBeInTheDocument();
+        expect(queryByText(/Accept/)).not.toBeInTheDocument();
+        expect(queryByText(/Decline/)).not.toBeInTheDocument();
+        expect(queryByText(/Send/)).not.toBeInTheDocument();
+        expect(queryByText(/Unfriend/)).not.toBeInTheDocument();
     });
 });
 
@@ -128,7 +136,7 @@ test("renders unfriend request button when status true and isAccepted true ) ", 
 
     let id = "3";
     //when
-    const { container, getByText } = render(
+    const { container, getByText, queryByText } = render(
         <MemoryRouter initialEntries={["/otherprofile/3"]}>
             <Routes>
                 <Route
@@ -142,6 +150,10 @@ test("renders unfriend request button when status true and isAccepted true ) ", 
     //then
     await waitFor(() => {
         expect(getByText(/Unfriend/)).toBeInTheDocument();
+        expect(queryByText(/Accept/)).not.toBeInTheDocument();
+        expect(queryByText(/Decline/)).not.toBeInTheDocument();
+        expect(queryByText(/Send/)).not.toBeInTheDocument();
+        expect(queryByText(/Cancel/)).not.toBeInTheDocument();
     });
 });
 
@@ -172,7 +184,7 @@ test("renders Cancel request button when status true and amIsender true ) ", asy
 
     let id = "3";
     //when
-    const { container, getByText } = render(
+    const { container, getByText, queryByText } = render(
         <MemoryRouter initialEntries={["/otherprofile/3"]}>
             <Routes>
                 <Route
@@ -186,6 +198,10 @@ test("renders Cancel request button when status true and amIsender true ) ", asy
     //then
     await waitFor(() => {
         expect(getByText(/Cancel/)).toBeInTheDocument();
+        expect(queryByText(/Accept/)).not.toBeInTheDocument();
+        expect(queryByText(/Decline/)).not.toBeInTheDocument();
+        expect(queryByText(/Send/)).not.toBeInTheDocument();
+        expect(queryByText(/Unfriend/)).not.toBeInTheDocument();
     });
 });
 
@@ -216,7 +232,7 @@ test("renders Accept / decline request button when status true and amIsender fal
 
     let id = "3";
     //when
-    const { container, getByText } = render(
+    const { container, getByText, queryByText } = render(
         <MemoryRouter initialEntries={["/otherprofile/3"]}>
             <Routes>
                 <Route
@@ -230,6 +246,9 @@ test("renders Accept / decline request button when status true and amIsender fal
     //then
     await waitFor(() => {
         expect(getByText(/Accept/)).toBeInTheDocument();
-        expect(getByText(/Decline/)).toBeInTheDocument();
+        expect(queryByText(/Decline/)).toBeInTheDocument();
+        expect(queryByText(/Send/)).not.toBeInTheDocument();
+        expect(queryByText(/Unfriend/)).not.toBeInTheDocument();
+        expect(queryByText(/Cancel/)).not.toBeInTheDocument();
     });
 });
