@@ -124,3 +124,65 @@ module.exports.getUserList = (query) => {
         })
         .catch((err) => console.log(err));
 };
+
+module.exports.findFriendshipStatus = (sender, recipient) => {
+    const query = `
+        SELECT * FROM friendships
+        WHERE (sender_id = $1 AND recipient_id = $2)
+        OR (sender_id = $2 AND recipient_id = $1)`;
+    return db
+        .query(query, [sender, recipient])
+        .then((result) => {
+            console.log("here i am ", result.rows);
+            if (result.rows.length > 0) return result.rows[0];
+            return false;
+        })
+        .catch((err) => console.log(err));
+};
+//     id SERIAL PRIMARY KEY,
+//     sender_id INTEGER NOT NULL REFERENCES users(id),
+//     recipient_id INTEGER NOT NULL REFERENCES users(id),
+//     accepted BOOLEAN DEFAULT false,
+//     created_at TIMESTAMP DEFAULT current_timestamp
+module.exports.createFriendRequest = (sender, recipient) => {
+    return db
+        .query(
+            `INSERT INTO friendships ("sender_id", "recipient_id")
+    VALUES ($1, $2)
+    RETURNING *`,
+            [sender, recipient]
+        )
+        .then((result) => {
+            return result.rows[0];
+        });
+};
+
+module.exports.deleteFriendRequest = (sender, recipient) => {
+    return db
+        .query(
+            `DELETE FROM friendships 
+                    WHERE (sender_id=$1 AND recipient_id=$2)
+                    OR (sender_id=$2 AND recipient_id=$1)`,
+            [sender, recipient]
+        )
+        .then(() => {
+            return true;
+        })
+        .catch((err) => {
+            console.log(err);
+            return false;
+        });
+};
+
+module.exports.acceptFriendRequest = (sender, recipient, accept) => {
+    return db
+        .query(
+            `UPDATE friendships SET bio=$3
+            WHERE (sender_id=$1 AND recipient_id=$2)
+            OR (sender_id=$2 AND recipient_id=$1)`,
+            [sender, recipient, accept]
+        )
+        .then((result) => {
+            return result.rows[0];
+        });
+};
