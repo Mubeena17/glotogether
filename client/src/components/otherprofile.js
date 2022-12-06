@@ -66,7 +66,10 @@ export default function Otherprofile() {
     return (
         <Row>
             <Col sm={3}>
-                <Profilepic src={userState.profileurl} size={"large"} />
+                <Profilepic
+                    src={userState.profileurl || "/images/profile.png"}
+                    size={"large"}
+                />
             </Col>
             <Col sm={4}>
                 <h1>
