@@ -41,6 +41,7 @@ function Uploadmodal(props) {
                             />
                         </Form.Group>
                         <Button
+                            disabled={!selectedFile}
                             variant="secondary"
                             type="sumbit"
                             onClick={handleSubmit}
