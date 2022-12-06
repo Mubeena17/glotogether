@@ -27,17 +27,20 @@ export const Auth = {
             });
 
             if (response.status === 200) {
-                return true;
+                return response.json();
             } else throw Error("Something went wrong");
         } catch (err) {
             console.log(err.message);
-            return false;
+            return response.json({
+                success: false,
+                message: err.message,
+            });
         }
     },
 
     logout: () => {
         fetch("/logout").then(() => {
-            location.reload();
+            location.replace("/");
             return;
         });
     },
@@ -50,20 +53,22 @@ export const Auth = {
             lastname,
         };
         try {
-            let response = fetch("/register", {
+            let response = await fetch("/register", {
                 method: "POST",
                 body: JSON.stringify(user),
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
-
             if (response.status === 200) {
-                return true;
+                return response.json();
             } else throw Error("Something went wrong");
         } catch (err) {
             console.log(err.message);
-            return false;
+            return response.json({
+                success: false,
+                message: err.message,
+            });
         }
     },
 };

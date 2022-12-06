@@ -12,11 +12,15 @@ function Login() {
         password: "",
     });
 
+    const [error, setError] = useState("");
+
     const handleSumbit = async (e) => {
         e.preventDefault();
-        let res = Auth.loginUser(loginState.email, loginState.password);
-        if (res) {
+        let res = await Auth.loginUser(loginState.email, loginState.password);
+        if (res.success) {
             location.replace("/");
+        } else {
+            setError(res.message);
         }
     };
 
@@ -30,6 +34,7 @@ function Login() {
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>
                         <Form.Control
+                            required
                             type="email"
                             placeholder="Enter email"
                             onChange={(event) => {
@@ -37,9 +42,6 @@ function Login() {
                                 setLoginState({ ...loginState, email: value });
                             }}
                         />
-                        <Form.Text className="text-muted">
-                            We`ll never share your email with anyone else.
-                        </Form.Text>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -56,18 +58,14 @@ function Login() {
                             }}
                         />
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                        <Form.Check
-                            type="checkbox"
-                            label="Check me out"
-                            onChange={(event) => {
-                                const value = event.target.checked;
-                                setLoginState({
-                                    ...loginState,
-                                    checkMeOut: value,
-                                });
-                            }}
-                        />
+
+                    <Form.Group>
+                        <Form.Text
+                            id="error"
+                            style={{ color: "red", fontSize: "16px" }}
+                        >
+                            {error}
+                        </Form.Text>
                     </Form.Group>
                     <Button
                         variant="primary"

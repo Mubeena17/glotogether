@@ -60,6 +60,7 @@ router.post("/login", (req, res) => {
             } else throw Error("No user with email exist");
         })
         .then((result) => {
+            console.log("result pass", result);
             if (result) return true;
             else throw Error("Wrong password");
         })
@@ -74,7 +75,7 @@ router.post("/login", (req, res) => {
         .catch((err) => {
             return res.json({
                 success: false,
-                message: "login failed!",
+                message: err.message,
             });
         });
 });

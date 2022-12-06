@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Form, Container, Stack } from "react-bootstrap";
+import { Button, Form, Container, Stack, Alert } from "react-bootstrap";
 import { Auth } from "../utlis/auth";
 import "../App.css";
 import "bootstrap/dist/css/bootstrap.css";
@@ -12,7 +12,7 @@ function Registration() {
         firstname: "",
         lastname: "",
     });
-
+    const [error, setError] = useState("");
     const handleSumbit = async () => {
         let res = await Auth.registerUser(
             registrationState.email,
@@ -20,8 +20,11 @@ function Registration() {
             registrationState.firstname,
             registrationState.lastname
         );
-        if (res) {
+        console.log("here its ", res);
+        if (res.success) {
             location.reload();
+        } else {
+            setError(res.message);
         }
     };
 
@@ -89,7 +92,14 @@ function Registration() {
                             }}
                         />
                     </Form.Group>
-
+                    <Form.Group>
+                        <Form.Text
+                            id="error"
+                            style={{ color: "red", fontSize: "16px" }}
+                        >
+                            {error}
+                        </Form.Text>
+                    </Form.Group>
                     <Button
                         variant="primary"
                         disabled={
