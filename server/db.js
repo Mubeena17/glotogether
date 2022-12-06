@@ -41,7 +41,7 @@ module.exports.storePasswordRestCode = ({ email, code }) => {
             `INSERT INTO reset_code (email, code )
              VALUES ($1, $2)
              ON CONFLICT (email)
-             DO UPDATE SET code=$2
+             DO UPDATE SET code=$2, created_at=CURRENT_TIMESTAMP
              RETURNING email, created_at`,
             [email, code]
         )
@@ -60,6 +60,18 @@ module.exports.verifyPasswordRestCode = ({ email }) => {
         });
 };
 
+module.exports.verifyRestCode = ({ email }) => {
+    return db
+        .query(
+            `SELECT code FROM reset_code
+             WHERE email=$1 AND CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes'`,
+            [email]
+        )
+        .then((result) => {
+            if (result.rows.length > 0) return result.rows[0];
+            return false;
+        });
+};
 module.exports.updatePassword = ({ email, password }) => {
     return db
         .query(`UPDATE users SET password=$1 WHERE email=$2 RETURNING *`, [

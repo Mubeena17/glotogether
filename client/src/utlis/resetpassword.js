@@ -12,7 +12,7 @@ export const Reset = {
             .then((result) => result.json())
             .then((result) => {
                 console.log("hello result ", result);
-                return true;
+                return result;
             });
     },
 
@@ -28,7 +28,7 @@ export const Reset = {
             .then((result) => result.json())
             .then((result) => {
                 console.log("hello result ", result);
-                return true;
+                return result;
             });
     },
 };

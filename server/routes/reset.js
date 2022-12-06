@@ -5,6 +5,7 @@ const {
     storePasswordRestCode,
     verifyPasswordRestCode,
     updatePassword,
+    verifyRestCode,
 } = require("../db");
 const code = require("../secretcode");
 const { ses } = require("../ses");
@@ -20,16 +21,17 @@ router.post("/password/reset/start", (req, res) => {
         })
         .then((resetData) => {
             //send email
-
-            return sendEmail(resetData);
+            sendEmail(resetData);
+            return true;
         })
         .then((isCodeSend) => {
+            console.log("HEllo ", isCodeSend);
             if (isCodeSend) {
                 return res.json({
                     success: true,
                     message: "reset code send",
                 });
-            } else throw Error("Not send");
+            }
         })
         .catch((err) => {
             return res.json({
@@ -42,13 +44,15 @@ router.post("/password/reset/start", (req, res) => {
 router.post("/password/reset/verify", (req, res) => {
     let { email, code, password } = req.body;
     console.log("update verify req.body", req.body);
-    verifyPasswordRestCode({ email })
+    verifyRestCode({ email })
         .then((dbcode) => {
-            console.log(dbcode, code);
-            if (dbcode.code === code) {
-                console.log("code matches");
-                return hash(password);
-            } else throw Error("Code doesnt match");
+            console.log("COde is ", dbcode, code);
+            if (dbcode) {
+                if (dbcode.code === code) {
+                    console.log("code matches");
+                    return hash(password);
+                } else throw Error("Code doesnt matches");
+            } else throw Error("Code Expired");
         })
         .then((password) => {
             console.log("hashing password");
@@ -95,6 +99,8 @@ const sendEmail = (resetData) => {
     })
         .promise()
         .then(() => true)
-        //catch should be false
-        .catch((err) => true);
+        .catch((err) => {
+            console.log("huhuhuh");
+            return true;
+        });
 };

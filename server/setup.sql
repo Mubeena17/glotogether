@@ -19,7 +19,7 @@ CREATE TABLE reset_code (
     code VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
+-- //ALTER TABLE mytable ALTER COLUMN created_at SET DEFAULT now();
 CREATE TABLE friendships (
     id SERIAL PRIMARY KEY,
     sender_id INTEGER NOT NULL REFERENCES users(id),

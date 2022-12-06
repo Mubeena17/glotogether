@@ -12,9 +12,11 @@ function ResetPassword() {
         code: "",
         newPassword: "",
     });
+
+    const [error, setError] = useState("");
     const handleSumbitEmail = async () => {
         let res = await Reset.resetStart(resetState.email);
-        if (res) {
+        if (res.success) {
             setResetState({ ...resetState, view: 2 });
         }
     };
@@ -25,9 +27,9 @@ function ResetPassword() {
             resetState.newPassword
         );
 
-        if (res) {
+        if (res.success) {
             setResetState({ ...resetState, view: 3 });
-        }
+        } else setError(res.message);
     };
     const currentview = () => {
         switch (resetState.view) {
@@ -110,6 +112,17 @@ function ResetPassword() {
                                             });
                                         }}
                                     />
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Text
+                                        id="error"
+                                        style={{
+                                            color: "red",
+                                            fontSize: "16px",
+                                        }}
+                                    >
+                                        {error}
+                                    </Form.Text>
                                 </Form.Group>
 
                                 <Button
