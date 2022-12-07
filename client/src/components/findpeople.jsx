@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Find } from "../utlis/find";
 import { Card, Row, Col, Image, Container, Form } from "react-bootstrap";
+import Profilecard from "./profilecard";
 
 export default function Findpeople() {
     const [userList, setUserList] = useState([]);
@@ -21,7 +22,7 @@ export default function Findpeople() {
     }, [queryState]);
 
     return (
-        <div className="d-grid gap-4">
+        <div>
             <Form>
                 <Form.Group className="mb-3 col-md-5" controlId="formSearch">
                     <Form.Label>Looking someone particular</Form.Label>
@@ -40,32 +41,11 @@ export default function Findpeople() {
             {queryState.length > 0 && userList.length == 0 && (
                 <h2>No user exixst </h2>
             )}
-            {userList.map((user) => (
-                <Card key={user.id} style={{ width: "20rem" }}>
-                    <Card.Body>
-                        <Container>
-                            <Card.Link href={`/otherprofile/${user.id}`}>
-                                <Row>
-                                    <Col>
-                                        <Image
-                                            height="100px"
-                                            src={
-                                                user.profileurl ||
-                                                "/images/profile.png"
-                                            }
-                                        />
-                                    </Col>
-                                    <Col>
-                                        <Card.Title>
-                                            {user.firstname}
-                                        </Card.Title>
-                                    </Col>
-                                </Row>
-                            </Card.Link>
-                        </Container>
-                    </Card.Body>
-                </Card>
-            ))}
+            <Row>
+                {userList.map((user) => (
+                    <Profilecard key={user.id} user={user} />
+                ))}
+            </Row>
         </div>
     );
 }

@@ -198,3 +198,17 @@ module.exports.acceptFriendRequest = (sender, recipient) => {
             return result.rows[0];
         });
 };
+
+module.exports.getFriendList = (id) => {
+    return db
+        .query(
+            `SELECT users.id, firstname, lastname, profileurl, accepted
+        FROM friendships
+        JOIN users 
+        ON (accepted = FALSE AND recipient_id = $1 AND sender_id = users.id) 
+        OR (accepted = TRUE AND recipient_id = $1 AND sender_id = users.id) 
+        OR (accepted = TRUE AND sender_id = $1 AND recipient_id = users.id)`,
+            [id]
+        )
+        .then((result) => result.rows);
+};

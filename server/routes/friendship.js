@@ -6,6 +6,7 @@ const {
     createFriendRequest,
     deleteFriendRequest,
     acceptFriendRequest,
+    getFriendList,
 } = require("../db");
 
 //friendship status
@@ -13,10 +14,6 @@ router.get("/friendship/:id", async (req, res) => {
     let sender = req.session.user_id;
     let recipient = req.params.id;
     let response = await findFriendshipStatus(sender, recipient);
-
-    console.log("get", response);
-    console.log("Sender id ", response.sender_id);
-    console.log("session id ", req.session.user_id);
 
     //no database entry
     if (!response) {
@@ -38,9 +35,8 @@ router.get("/friendship/:id", async (req, res) => {
 router.post("/friendship/:id", async (req, res) => {
     let sender = req.session.user_id;
     let recipient = req.params.id;
-    console.log("post");
     let response = await createFriendRequest(sender, recipient);
-    console.log(response);
+
     if (response) {
         res.json({
             status: true,
@@ -55,9 +51,9 @@ router.post("/friendship/:id", async (req, res) => {
 router.delete("/friendship/:id", async (req, res) => {
     let sender = req.session.user_id;
     let recipient = req.params.id;
-    console.log("DELETE");
+
     let response = await deleteFriendRequest(sender, recipient);
-    console.log(response);
+
     if (response) {
         res.json({
             status: true,
@@ -73,7 +69,7 @@ router.put("/friendship/:id", async (req, res) => {
     let recipient = req.params.id;
     console.log("Put");
     let response = await acceptFriendRequest(sender, recipient);
-    console.log(response);
+
     if (response) {
         res.json({
             status: true,
@@ -85,6 +81,13 @@ router.put("/friendship/:id", async (req, res) => {
         return res.json({
             status: false,
         });
+});
+// no firend case
+router.get("/myfriendlist", async (req, res) => {
+    let list = await getFriendList(req.session.user_id);
+    return res.json({
+        data: list,
+    });
 });
 
 module.exports = router;

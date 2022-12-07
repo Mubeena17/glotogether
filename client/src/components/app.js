@@ -1,6 +1,8 @@
 import ProfileApp from "./profileapp";
 import Findpeople from "./findpeople";
 import Otherprofile from "./otherprofile";
+import Friends from "./friends";
+import Random from "./random";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 export default function App(props) {
@@ -17,6 +19,8 @@ export default function App(props) {
                     path="/otherprofile/:id"
                     element={<Otherprofile />}
                 ></Route>
+                <Route path="/random" element={<Random />}></Route>
+                <Route path="/friends" element={<Friends />}></Route>
             </Routes>
         </BrowserRouter>
     );

@@ -58,6 +58,8 @@ export default function ProfileApp(props) {
                     <Logo />
                 </div>
                 <Link to="/find">Find people</Link>
+                <Link to="/random">Random</Link>
+                <Link to="/friends">My Friends</Link>
                 <Profilepic
                     src={userState.profileurl}
                     onShow={handleShow}
