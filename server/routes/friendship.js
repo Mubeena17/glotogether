@@ -71,8 +71,10 @@ router.put("/friendship/:id", async (req, res) => {
     let response = await acceptFriendRequest(sender, recipient);
 
     if (response) {
+        console.log(response);
         res.json({
             status: true,
+            user: response,
             isAccepted: response.accepted,
             amIsender:
                 req.session.user_id === response.sender_id ? true : false,

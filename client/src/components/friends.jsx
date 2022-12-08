@@ -9,113 +9,139 @@ import {
     Button,
 } from "react-bootstrap";
 import { useState, useEffect } from "react";
-
+import { Friendship } from "../utlis/friendship";
 import { useSelector, useDispatch } from "react-redux";
-import { populateFriendList } from "../redux/friendslice";
+import { received, decline, accept } from "../redux/friendslice";
 
 export default function Friends() {
-    const friendList = useSelector((state) =>
-        state.friends.filter((friend) => friend.accepted)
+    const friendList = useSelector(
+        (state) =>
+            state.friends && state.friends.filter((friend) => friend.accepted)
     );
 
-    const friendRequest = useSelector((state) =>
-        state.friends.filter((friend) => !friend.accepted)
+    const friendRequest = useSelector(
+        (state) =>
+            state.friends && state.friends.filter((friend) => !friend.accepted)
     );
 
     const dispatch = useDispatch();
 
-    const getList = async () => {
+    const getFriendList = async () => {
         let responseJSON = await fetch("/myfriendlist");
-
         let response = await responseJSON.json();
-
-        dispatch(populateFriendList(response.data));
+        console.log(response.data);
+        dispatch(received(response.data));
     };
+
+    const handleDecline = async (id) => {
+        let method = "DELETE";
+        let response = await Friendship.sendFriendrequest(id, method);
+        if (response.status) {
+            console.log("jjojjo");
+            const action = decline(id);
+            dispatch(action);
+        }
+    };
+
+    const handleAccept = async (id) => {
+        let response = await Friendship.sendFriendrequest(id, "PUT");
+        if (response.status) {
+            let user = response.user;
+            const action = accept(user.sender_id);
+            dispatch(action);
+        }
+    };
+
     useEffect(() => {
-        getList();
+        getFriendList();
     }, []);
 
     return (
-        <>
+        <div style={{ paddingTop: "50px" }}>
+            <h1> My friends </h1>
             <Row>
                 {friendList.map((user) => (
-                    <Col md="5" key={user.id} className="mb-3">
+                    <Col md="3" key={user.id} className="mb-3">
                         <Card
                             style={{
                                 borderRadius: "15px",
                                 backgroundColor: "Lightgrey",
                             }}
                         >
-                            <Card.Body className="p-4">
-                                <div className="d-flex text-black">
-                                    <div className="flex-shrink-0">
-                                        <Image
-                                            style={{
-                                                width: "180px",
-                                                height: "180px",
-                                                objectFit: "cover",
-                                                borderRadius: "10px",
-                                            }}
-                                            src={
-                                                user.profileurl ||
-                                                "/images/profile.png"
-                                            }
-                                            alt="Generic placeholder image"
-                                            fluid
-                                        />
-                                    </div>
-                                    <div className="flex-grow-1 ms-3">
-                                        <Card.Title>
-                                            {user.firstname} {user.lastname}
-                                        </Card.Title>
+                            <Card.Body className="text-center">
+                                <Image
+                                    src={
+                                        user.profileurl || "images/profile.png"
+                                    }
+                                    alt="avatar"
+                                    style={{
+                                        width: "150px",
+                                        height: "150px",
+                                        objectFit: "cover",
+                                        borderRadius: "10px",
+                                    }}
+                                    fluid
+                                />
+                                <p className="text-muted mb-1">
+                                    {user.firstname} {user.lastname}
+                                </p>
 
-                                        <Card.Text>{user.bio}</Card.Text>
-
-                                        <div
-                                            className="d-flex justify-content-start rounded-3 p-2 mb-2"
-                                            style={{
-                                                backgroundColor: "#efefef",
-                                            }}
-                                        >
-                                            <div>
-                                                <p className="small text-muted mb-1">
-                                                    Articles
-                                                </p>
-                                                <p className="mb-0">41</p>
-                                            </div>
-                                            <div className="px-3">
-                                                <p className="small text-muted mb-1">
-                                                    Followers
-                                                </p>
-                                                <p className="mb-0">976</p>
-                                            </div>
-                                            <div>
-                                                <p className="small text-muted mb-1">
-                                                    Rating
-                                                </p>
-                                                <p className="mb-0">8.5</p>
-                                            </div>
-                                        </div>
-                                        <div className="d-flex pt-1">
-                                            <Button className="me-1 flex-grow-1">
-                                                Check profile
-                                            </Button>
-                                        </div>
-                                    </div>
+                                <div className="d-grid gap-2">
+                                    <Button
+                                        onClick={() => handleDecline(user.id)}
+                                    >
+                                        Unfriend
+                                    </Button>
                                 </div>
                             </Card.Body>
                         </Card>
                     </Col>
                 ))}
             </Row>
-            <div> New request </div>
-            <Row>
+            <h1> New request </h1>
+            <Row style={{ paddingTop: "10px" }}>
                 {friendRequest.map((user) => (
-                    <div key={user.id}>
-                        {user.firstname} {user.lastname}
-                    </div>
+                    <Col md="3" key={user.id} className="mb-3">
+                        <Card
+                            style={{
+                                borderRadius: "15px",
+                                backgroundColor: "Lightgrey",
+                            }}
+                        >
+                            <Card.Body className="text-center">
+                                <Image
+                                    src={user.profileurl}
+                                    alt="avatar"
+                                    style={{
+                                        width: "150px",
+                                        height: "150px",
+                                        objectFit: "cover",
+                                        borderRadius: "10px",
+                                    }}
+                                    fluid
+                                />
+                                <p className="text-muted mb-1">
+                                    {user.firstname} {user.lastname}
+                                </p>
+
+                                <div className="d-flex justify-content-center mb-2">
+                                    <Button
+                                        onClick={() => handleAccept(user.id)}
+                                    >
+                                        Accept
+                                    </Button>
+                                    <Button
+                                        className="ms-1"
+                                        onClick={() => handleDecline(user.id)}
+                                    >
+                                        Decline
+                                    </Button>
+                                </div>
+                            </Card.Body>
+                        </Card>
+                    </Col>
                 ))}
             </Row>
-        </>
+        </div>
     );
 }
