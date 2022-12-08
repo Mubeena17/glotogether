@@ -37,7 +37,6 @@ export default function Friends() {
         let method = "DELETE";
         let response = await Friendship.sendFriendrequest(id, method);
         if (response.status) {
-            console.log("jjojjo");
             const action = decline(id);
             dispatch(action);
         }

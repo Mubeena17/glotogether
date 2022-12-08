@@ -3,6 +3,7 @@ import Profilepic from "./profilepic";
 import { Row, Col, Button } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router";
 import { Friendship } from "../utlis/friendship";
+import Friendbutton from "./friendbutton";
 
 export default function Otherprofile() {
     const { id } = useParams();
@@ -25,8 +26,6 @@ export default function Otherprofile() {
     };
     const getFriendshipInfo = async () => {
         let response = await Friendship.getStatus(id);
-        console.log("%%%RESPONSE%%% ", response);
-        //0 rows
 
         setFriendshipState(response.status);
         setisAccepted(response.isAccepted);
@@ -79,26 +78,35 @@ export default function Otherprofile() {
                 </h1>
                 <div> {userState.bio || "No bio"}</div>
                 {!friendshipState && (
-                    <Button onClick={handleSendFriendRequest}>
-                        Send Request
-                    </Button>
+                    <Friendbutton
+                        text="Send Request"
+                        onClick={handleSendFriendRequest}
+                    ></Friendbutton>
                 )}
                 {friendshipState && !isAccepted && amIsender && (
-                    <Button onClick={handleDeleteRequest}>
-                        Cancel Request
-                    </Button>
+                    <Friendbutton
+                        text="Cancel Request"
+                        onClick={handleDeleteRequest}
+                    ></Friendbutton>
                 )}
 
                 {friendshipState && !amIsender && !isAccepted && (
                     <>
-                        <Button onClick={handleAcceptFriendRequest}>
-                            Accept
-                        </Button>
-                        <Button onClick={handleDeleteRequest}>Decline</Button>
+                        <Friendbutton
+                            text="Accept"
+                            onClick={handleAcceptFriendRequest}
+                        ></Friendbutton>
+                        <Friendbutton
+                            text="Decline"
+                            onClick={handleDeleteRequest}
+                        ></Friendbutton>
                     </>
                 )}
                 {friendshipState && isAccepted && (
-                    <Button onClick={handleDeleteRequest}>Unfriend</Button>
+                    <Friendbutton
+                        text="Unfriend"
+                        onClick={handleDeleteRequest}
+                    ></Friendbutton>
                 )}
             </Col>
         </Row>
