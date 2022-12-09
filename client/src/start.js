@@ -6,6 +6,7 @@ import { Navbar, Container, Button } from "react-bootstrap";
 import { Auth } from "./utlis/auth";
 const root = createRoot(document.querySelector("main"));
 import store from "./redux/store";
+import { init } from "./socket";
 
 const handleLogout = () => {
     Auth.logout();
@@ -35,6 +36,7 @@ fetch("/user/id.json")
 
                     {user.user_id && (
                         <Provider store={store}>
+                            {init(store)}
                             <App id={user.user_id} />
                         </Provider>
                     )}
