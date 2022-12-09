@@ -3,7 +3,6 @@ import Bioeditor from "./bioeditor";
 import { Form, Row, Col } from "react-bootstrap";
 
 export default function Profile(props) {
-    console.log("profile props", props);
     return (
         <Form>
             <Row>

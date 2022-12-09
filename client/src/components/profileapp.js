@@ -26,7 +26,6 @@ export default function ProfileApp(props) {
     };
 
     const bioUpdated = (biotext) => {
-        console.log("BIO TEXT ", biotext);
         userSetState((userState) => ({
             ...userState,
             bio: biotext,
@@ -50,7 +49,6 @@ export default function ProfileApp(props) {
         getInfo();
     }, [props.id]);
 
-    console.log(userState);
     return (
         <>
             <Stack direction="horizontal" gap={3}>
@@ -60,6 +58,7 @@ export default function ProfileApp(props) {
                 <Link to="/find">Find people</Link>
                 <Link to="/random">Random</Link>
                 <Link to="/friends">My Friends</Link>
+                <Link to="/chat">Chats</Link>
                 <Profilepic
                     src={userState.profileurl}
                     onShow={handleShow}
