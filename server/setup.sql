@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS messages;
 DROP TABLE IF EXISTS friendships;
 DROP TABLE IF EXISTS reset_code;
 DROP TABLE IF EXISTS users;
@@ -27,3 +28,10 @@ CREATE TABLE friendships (
     accepted BOOLEAN DEFAULT false,
     created_at TIMESTAMP DEFAULT current_timestamp
 );
+
+CREATE TABLE messages (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    text VARCHAR NOT NULL,
+    created_at TIMESTAMP DEFAULT current_timestamp
+)
