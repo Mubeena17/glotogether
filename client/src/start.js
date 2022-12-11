@@ -8,39 +8,19 @@ const root = createRoot(document.querySelector("main"));
 import store from "./redux/store";
 import { init } from "./socket";
 
-const handleLogout = () => {
-    Auth.logout();
-};
-
 fetch("/user/id.json")
     .then((result) => result.json())
     .then((user) => {
         root.render(
             <div className="App">
-                <Navbar bg="dark" variant="dark">
-                    <Container>
-                        <Navbar.Brand>Social Network</Navbar.Brand>
-                        {user.user_id && (
-                            <Button
-                                variant="outline-secondary"
-                                onClick={handleLogout}
-                            >
-                                Logout
-                            </Button>
-                        )}
-                    </Container>
-                </Navbar>
+                {!user.user_id && <Welcome />}
 
-                <Container>
-                    {!user.user_id && <Welcome />}
-
-                    {user.user_id && (
-                        <Provider store={store}>
-                            {init(store)}
-                            <App id={user.user_id} />
-                        </Provider>
-                    )}
-                </Container>
+                {user.user_id && (
+                    <Provider store={store}>
+                        {init(store)}
+                        <App id={user.user_id} />
+                    </Provider>
+                )}
             </div>
         );
     });

@@ -4,7 +4,7 @@ import Profile from "./profile";
 import Uploadmodal from "./uploadmodal";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Stack } from "react-bootstrap";
+import { Stack, Container } from "react-bootstrap";
 
 export default function ProfileApp(props) {
     const [userState, userSetState] = useState({
@@ -51,34 +51,35 @@ export default function ProfileApp(props) {
 
     return (
         <>
-            <Stack direction="horizontal" gap={3}>
-                <div className="me-auto">
-                    <Logo />
+            <Container>
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "row-reverse",
+                        margin: "20px",
+                    }}
+                >
+                    <Profilepic
+                        src={userState.profileurl}
+                        onShow={handleShow}
+                        user={userState.user}
+                    />
                 </div>
-                <Link to="/find">Find people</Link>
-                <Link to="/random">Random</Link>
-                <Link to="/friends">My Friends</Link>
-                <Link to="/chat">Chats</Link>
-                <Profilepic
-                    src={userState.profileurl}
-                    onShow={handleShow}
+                <div>
+                    <Profile
+                        src={userState.profileurl}
+                        user={userState.user}
+                        bio={userState.bio}
+                        bioUpdated={bioUpdated}
+                    />
+                </div>
+                <Uploadmodal
+                    show={show}
+                    change={changeprofile}
+                    onHide={handleClose}
                     user={userState.user}
                 />
-            </Stack>
-            <div>
-                <Profile
-                    src={userState.profileurl}
-                    user={userState.user}
-                    bio={userState.bio}
-                    bioUpdated={bioUpdated}
-                />
-            </div>
-            <Uploadmodal
-                show={show}
-                change={changeprofile}
-                onHide={handleClose}
-                user={userState.user}
-            />
+            </Container>
         </>
     );
 }
