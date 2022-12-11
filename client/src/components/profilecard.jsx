@@ -38,8 +38,6 @@ export default function Profilecard(props) {
                                 {user.firstname} {user.lastname}
                             </Card.Title>
 
-                            <Card.Text>{user.bio}</Card.Text>
-
                             <div
                                 className="d-flex justify-content-start rounded-3 p-2 mb-2"
                                 style={{
@@ -47,22 +45,8 @@ export default function Profilecard(props) {
                                 }}
                             >
                                 <div>
-                                    <p className="small text-muted mb-1">
-                                        Articles
-                                    </p>
-                                    <p className="mb-0">41</p>
-                                </div>
-                                <div className="px-3">
-                                    <p className="small text-muted mb-1">
-                                        Followers
-                                    </p>
-                                    <p className="mb-0">976</p>
-                                </div>
-                                <div>
-                                    <p className="small text-muted mb-1">
-                                        Rating
-                                    </p>
-                                    <p className="mb-0">8.5</p>
+                                    <p className="small text-muted mb-1">Bio</p>
+                                    <p className="mb-0">{user.bio}</p>
                                 </div>
                             </div>
                             <div className="d-flex pt-1">
