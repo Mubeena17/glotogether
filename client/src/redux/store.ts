@@ -44,7 +44,13 @@ export type Statetype = {
         }[];
     };
     chat: {
-        message: [string];
+        message: {
+            id: number;
+            firstname: string;
+            lastname: string;
+            profileurl: string;
+            text: string;
+        }[];
     };
 };
 export default store;

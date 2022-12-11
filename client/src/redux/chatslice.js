@@ -6,13 +6,13 @@ const chatSlice = createSlice({
         messages: [],
     },
     reducers: {
-        getMessage: (state, action) => {
+        getMessage: (state, { payload }) => {
             console.log("get message action");
-            state.messages.push(...action.payload);
+            state.messages.push(...payload.reverse());
         },
-        newMessage: (state, action) => {
-            console.log("get message action");
-            state.messages.push(action.payload);
+        newMessage: (state, { payload }) => {
+            console.log("new message ", payload);
+            state.messages.push(payload);
         },
     },
 });

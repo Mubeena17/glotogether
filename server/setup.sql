@@ -34,4 +34,6 @@ CREATE TABLE messages (
     user_id INTEGER NOT NULL REFERENCES users(id),
     text VARCHAR NOT NULL,
     created_at TIMESTAMP DEFAULT current_timestamp
-)
+);
+
+

@@ -23,13 +23,14 @@ app.use(compression());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
 app.use(express.static(path.join(__dirname, "uploads")));
-app.use(
-    cookieSession({
-        secret: "Im hungry",
-        maxAge: 1000 * 60 * 60 * 24 * 14,
-        sameSite: true,
-    })
-);
+
+const cookieSessionMiddleware = cookieSession({
+    secret: `I'm always hungry.`,
+    maxAge: 1000 * 60 * 60 * 24 * 90,
+    sameSite: true,
+});
+app.use(cookieSessionMiddleware);
+
 app.use(express.urlencoded({ extended: false }));
 
 app.use(authRouter);
@@ -47,12 +48,6 @@ server.listen(PORT, function () {
 });
 
 //get req.session from express
-const cookieSessionMiddleware = cookieSession({
-    secret: `I'm always hungry.`,
-    maxAge: 1000 * 60 * 60 * 24 * 90,
-});
-
-app.use(cookieSessionMiddleware);
 io.use(function (socket, next) {
     cookieSessionMiddleware(socket.request, socket.request.res, next);
 });

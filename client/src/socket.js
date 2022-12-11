@@ -12,6 +12,9 @@ export const init = (store) => {
             }
         });
 
-        socket.on("newMessage", (data) => store.dispatch(newMessage(data)));
+        socket.on("newMessage", (data) => {
+            console.log("here the data ", data);
+            store.dispatch(newMessage(data));
+        });
     }
 };
