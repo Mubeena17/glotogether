@@ -56,7 +56,7 @@ export default function Friends() {
     }, []);
 
     return (
-        <div style={{ paddingTop: "50px" }}>
+        <Container style={{ paddingTop: "50px" }}>
             <h1> My friends </h1>
             <Row>
                 {friendList.map((user) => (
@@ -141,6 +141,6 @@ export default function Friends() {
                     </Col>
                 ))}
             </Row>
-        </div>
+        </Container>
     );
 }

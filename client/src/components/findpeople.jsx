@@ -22,7 +22,12 @@ export default function Findpeople() {
     }, [queryState]);
 
     return (
-        <div>
+        <Container className="mt-5">
+            <h1>Find people</h1>
+
+            {queryState.length > 0 && userList.length == 0 && (
+                <h2>No user exixst </h2>
+            )}
             <Form>
                 <Form.Group className="mb-3 col-md-5" controlId="formSearch">
                     <Form.Label>Looking someone particular</Form.Label>
@@ -36,16 +41,12 @@ export default function Findpeople() {
                     />
                 </Form.Group>
             </Form>
-            <h1>Find people</h1>
             {queryState == "" ? <h2>Checkout who just joined</h2> : ""}
-            {queryState.length > 0 && userList.length == 0 && (
-                <h2>No user exixst </h2>
-            )}
             <Row>
                 {userList.map((user) => (
                     <Profilecard key={user.id} user={user} />
                 ))}
             </Row>
-        </div>
+        </Container>
     );
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Profilepic from "./profilepic";
-import { Row, Col, Button } from "react-bootstrap";
+import { Row, Col, Button, Container } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router";
 import { Friendship } from "../utlis/friendship";
 import Friendbutton from "./friendbutton";
@@ -63,52 +63,55 @@ export default function Otherprofile() {
     }, [id]);
 
     return (
-        <Row>
-            <Col sm={3}>
-                <Profilepic
-                    src={userState.profileurl || "/images/profile.png"}
-                    size={"large"}
-                />
-            </Col>
-            <Col sm={4}>
-                <h1>
-                    {userState.firstname}
-                    <span></span>
-                    {userState.lastname}
-                </h1>
-                <div> {userState.bio || "No bio"}</div>
-                {!friendshipState && (
-                    <Friendbutton
-                        text="Send Request"
-                        onClick={handleSendFriendRequest}
-                    ></Friendbutton>
-                )}
-                {friendshipState && !isAccepted && amIsender && (
-                    <Friendbutton
-                        text="Cancel Request"
-                        onClick={handleDeleteRequest}
-                    ></Friendbutton>
-                )}
-
-                {friendshipState && !amIsender && !isAccepted && (
-                    <>
+        <Container className="mt-5">
+            <Row>
+                <Col md={3}>
+                    <Profilepic
+                        src={userState.profileurl || "/images/profile.png"}
+                        size={"large"}
+                    />
+                </Col>
+                <Col md={4}>
+                    <h1>
+                        {userState.firstname}
+                        <span></span>
+                        {userState.lastname}
+                    </h1>
+                    <div> {userState.bio || "No bio"}</div>
+                    {!friendshipState && (
                         <Friendbutton
-                            text="Accept"
-                            onClick={handleAcceptFriendRequest}
+                            text="Send Request"
+                            onClick={handleSendFriendRequest}
                         ></Friendbutton>
+                    )}
+                    {friendshipState && !isAccepted && amIsender && (
                         <Friendbutton
-                            text="Decline"
+                            text="Cancel Request"
                             onClick={handleDeleteRequest}
                         ></Friendbutton>
-                    </>
-                )}
-                {friendshipState && isAccepted && (
-                    <Friendbutton
-                        text="Unfriend"
-                        onClick={handleDeleteRequest}
-                    ></Friendbutton>
-                )}
-            </Col>
-        </Row>
+                    )}
+
+                    {friendshipState && !amIsender && !isAccepted && (
+                        <>
+                            <Friendbutton
+                                text="Accept"
+                                onClick={handleAcceptFriendRequest}
+                            ></Friendbutton>
+                            <Friendbutton
+                                className="ms-2"
+                                text="Decline"
+                                onClick={handleDeleteRequest}
+                            ></Friendbutton>
+                        </>
+                    )}
+                    {friendshipState && isAccepted && (
+                        <Friendbutton
+                            text="Unfriend"
+                            onClick={handleDeleteRequest}
+                        ></Friendbutton>
+                    )}
+                </Col>
+            </Row>
+        </Container>
     );
 }
