@@ -4,6 +4,7 @@ import { Button, Form, Container, Stack, Alert } from "react-bootstrap";
 import { Auth } from "../utlis/auth";
 import "../App.css";
 import "bootstrap/dist/css/bootstrap.css";
+import Logo from "./logo";
 
 function Registration() {
     const [registrationState, setRegistrationState] = useState({
@@ -34,6 +35,7 @@ function Registration() {
                 gap={2}
                 className="col-md-5 mx-auto justify-content-center fullvh"
             >
+                <Logo />
                 <Form id="form-registration">
                     <Form.Group className="mb-3">
                         <Form.Label>First Name</Form.Label>
