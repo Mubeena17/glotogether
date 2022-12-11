@@ -123,9 +123,9 @@ module.exports.getUserList = (query) => {
     let value = [];
     if (query == 0) {
         sql =
-            "SELECT profileurl, firstname, lastname, id FROM users ORDER BY created_at DESC LIMIT 3";
+            "SELECT profileurl, firstname, lastname, id, bio FROM users ORDER BY created_at DESC LIMIT 3";
     } else {
-        sql = `SELECT profileurl, firstname, lastname, id FROM users WHERE firstname ILIKE $1`;
+        sql = `SELECT profileurl, firstname, lastname, id, bio FROM users WHERE firstname ILIKE $1`;
         value = [query + "%"];
     }
     return db
@@ -151,11 +151,7 @@ module.exports.findFriendshipStatus = (sender, recipient) => {
         })
         .catch((err) => console.log(err));
 };
-//     id SERIAL PRIMARY KEY,
-//     sender_id INTEGER NOT NULL REFERENCES users(id),
-//     recipient_id INTEGER NOT NULL REFERENCES users(id),
-//     accepted BOOLEAN DEFAULT false,
-//     created_at TIMESTAMP DEFAULT current_timestamp
+
 module.exports.createFriendRequest = (sender, recipient) => {
     return db
         .query(
@@ -202,7 +198,7 @@ module.exports.acceptFriendRequest = (sender, recipient) => {
 module.exports.getFriendList = (id) => {
     return db
         .query(
-            `SELECT users.id, firstname, lastname, profileurl, accepted
+            `SELECT users.id, firstname, lastname, profileurl, accepted, bio
         FROM friendships
         JOIN users 
         ON (accepted = FALSE AND recipient_id = $1 AND sender_id = users.id) 
@@ -211,4 +207,32 @@ module.exports.getFriendList = (id) => {
             [id]
         )
         .then((result) => result.rows);
+};
+
+module.exports.getMessages = () => {
+    return db
+        .query(
+            `SELECT users.id, firstname, lastname, profileurl, text
+            FROM messages
+            JOIN users
+            ON users.id = messages.user_id
+            ORDER BY messages.created_at DESC LIMIT 10`
+        )
+        .then((result) => result.rows);
+};
+
+module.exports.insertNewMessage = (userid, message) => {
+    return db
+        .query(
+            `WITH currentuser AS
+            (SELECT id, firstname, lastname, profileurl 
+            FROM users
+            WHERE id=$1),
+            message AS (INSERT INTO messages (user_id, text )
+            VALUES ($1,$2)
+            RETURNING text , created_at)
+            SELECT * FROM currentuser, message;`,
+            [userid, message]
+        )
+        .then((result) => result.rows[0]);
 };
