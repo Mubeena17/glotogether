@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
 import { getMessage, newMessage } from "./redux/chatslice";
 import { showToast, hideToast } from "./redux/notificationslice";
-import { received } from "./redux/onlineuserslice";
+import { online, offline } from "./redux/onlineuserslice";
 
 export let socket;
 export const init = (store) => {
@@ -29,8 +29,12 @@ export const init = (store) => {
         });
 
         socket.on("onlineuser", (data) => {
-            console.log("data onloine", data);
-            store.dispatch(received(data));
+            console.log("data online", data);
+            store.dispatch(online(data));
+        });
+        socket.on("useroffline", (data) => {
+            console.log("datat offline", data);
+            store.dispatch(offline(data.userId));
         });
     }
 };

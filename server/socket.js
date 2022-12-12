@@ -57,37 +57,34 @@ module.exports = (io) => {
                 console.log(
                     `socket with the id ${socket.id} is now disconnected`
                 );
+                let disconnectedUserid = loggedUser.find(
+                    (user) => user.socketId == socket.id
+                );
                 loggedUser = loggedUser.filter((user) => {
                     return user.socketId !== socket.id;
                 });
-                emitOnlineuserlist(loggedUser, socket);
+                io.emit("useroffline", disconnectedUserid);
+                //emitOnlineuserlist(loggedUser, socket);
             });
         });
     } catch (err) {
         console.log("Error : ", err.message);
     }
+
     const emitOnlineuserlist = (logged, socket) => {
         console.log("blaaa", socket.request.session);
         try {
             let onlineUser = logged.filter(
                 (user, index, self) =>
-                    index ===
-                    self.findIndex(
-                        (t) =>
-                            t.userId === user.userId &&
-                            t.userId !== socket.request.session.user_id
-                    )
+                    index === self.findIndex((t) => t.userId === user.userId)
             );
-
-            console.log("onlpinoe noe", onlineUser);
 
             let onlineuserdata = onlineUser.map(async (user) => {
                 return await getUserInfo(user.userId);
             });
 
             Promise.all(onlineuserdata).then((results) => {
-                console.log("uhuh", results);
-                io.to(socket.id).emit("onlineuser", results);
+                io.emit("onlineuser", results);
             });
         } catch (err) {
             console.log("ee", err.message);

@@ -6,11 +6,17 @@ const onlineuserslice = createSlice({
     name: "onlineusers",
     initialState,
     reducers: {
-        received(state, { payload }) {
+        online(state, { payload }) {
             return [...payload];
+        },
+        offline(state, { payload }) {
+            let updatedonlineList = state.filter((item) => {
+                return item.id != payload;
+            });
+            return updatedonlineList;
         },
     },
 });
 
-export const { received } = onlineuserslice.actions;
+export const { online, offline } = onlineuserslice.actions;
 export default onlineuserslice.reducer;
