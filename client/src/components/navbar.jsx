@@ -24,6 +24,7 @@ export default function Appnavbar() {
                 <Link to="/find">Find people</Link>
                 <Link to="/friends">My Friends</Link>
                 <Link to="/chat">Chats</Link>
+                <Link to="/online">Online user</Link>
 
                 <Button variant="outline-secondary" onClick={handleLogout}>
                     Logout

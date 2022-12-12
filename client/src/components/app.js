@@ -4,6 +4,7 @@ import Otherprofile from "./otherprofile";
 import Friends from "./friends";
 import Random from "./random";
 import Chat from "./Chat";
+import Onlineuser from "./onlineuser";
 import Appnavbar from "./navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Navbar, Container, Button } from "react-bootstrap";
@@ -28,6 +29,7 @@ export default function App(props) {
                 <Route path="/random" element={<Random />}></Route>
                 <Route path="/friends" element={<Friends />}></Route>
                 <Route path="/chat" element={<Chat />}></Route>
+                <Route path="/online" element={<Onlineuser />}></Route>
             </Routes>
         </BrowserRouter>
     );

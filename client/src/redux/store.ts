@@ -9,6 +9,7 @@ import counterReducer from "./counterslice";
 import friendReducer from "./friendslice";
 import chatReducer from "./chatslice";
 import notificationReducer from "./notificationslice";
+import onlineuserReducer from "./onlineuserslice";
 
 const immutableInvariantMiddleware = createImmutableStateInvariantMiddleware(
     {}
@@ -25,6 +26,7 @@ const store = configureStore({
         friends: friendReducer,
         chat: chatReducer,
         notification: notificationReducer,
+        onlineuser: onlineuserReducer,
     },
     middleware: [immutableInvariantMiddleware, thunkMiddleware],
 });
@@ -59,6 +61,14 @@ export type Statetype = {
             show: boolean;
             data: string;
         };
+    };
+    onlineuser: {
+        onlineuser: {
+            id: number;
+            firstname: string;
+            lastname: string;
+            profileurl: string;
+        }[];
     };
 };
 export default store;

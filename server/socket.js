@@ -8,7 +8,7 @@ module.exports = (io) => {
             var userId = socket.request.session.user_id;
 
             loggedUser.push({ userId, socketId: socket.id });
-            console.log("loge", loggedUser);
+
             //friend request notification
             socket.on("Friendrequest", async (receiverId) => {
                 console.log(
@@ -26,10 +26,13 @@ module.exports = (io) => {
                     );
                     io.to(reciever.socketId).emit(
                         "newRequest",
-                        `New request from ${sender.firstname}${sender.lastname}`
+                        `New friend request from ${sender.firstname}${sender.lastname}`
                     );
                 }
             });
+
+            //online user list
+            emitOnlineuserlist(loggedUser, socket);
 
             try {
                 let message = await getMessages();
@@ -57,9 +60,37 @@ module.exports = (io) => {
                 loggedUser = loggedUser.filter((user) => {
                     return user.socketId !== socket.id;
                 });
+                emitOnlineuserlist(loggedUser, socket);
             });
         });
     } catch (err) {
         console.log("Error : ", err.message);
     }
+    const emitOnlineuserlist = (logged, socket) => {
+        console.log("blaaa", socket.request.session);
+        try {
+            let onlineUser = logged.filter(
+                (user, index, self) =>
+                    index ===
+                    self.findIndex(
+                        (t) =>
+                            t.userId === user.userId &&
+                            t.userId !== socket.request.session.user_id
+                    )
+            );
+
+            console.log("onlpinoe noe", onlineUser);
+
+            let onlineuserdata = onlineUser.map(async (user) => {
+                return await getUserInfo(user.userId);
+            });
+
+            Promise.all(onlineuserdata).then((results) => {
+                console.log("uhuh", results);
+                io.to(socket.id).emit("onlineuser", results);
+            });
+        } catch (err) {
+            console.log("ee", err.message);
+        }
+    };
 };
