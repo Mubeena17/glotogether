@@ -7,7 +7,7 @@ const friendslice = createSlice({
     initialState,
     reducers: {
         received(state, { payload }) {
-            return [...state, ...payload];
+            return [...payload];
         },
         decline(state, { payload }) {
             console.log(payload);
