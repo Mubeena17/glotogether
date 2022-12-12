@@ -4,6 +4,7 @@ import { Row, Col, Button, Container } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router";
 import { Friendship } from "../utlis/friendship";
 import Friendbutton from "./friendbutton";
+import { socket } from "../socket";
 
 export default function Otherprofile() {
     const { id } = useParams();
@@ -38,6 +39,7 @@ export default function Otherprofile() {
         let response = await Friendship.sendFriendrequest(id, "POST");
         if (response.status) {
             setFriendshipState(response.status);
+            socket.emit("Friendrequest", id);
         }
     };
     const handleAcceptFriendRequest = async () => {

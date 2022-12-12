@@ -7,11 +7,13 @@ import Chat from "./Chat";
 import Appnavbar from "./navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Navbar, Container, Button } from "react-bootstrap";
+import Notification from "./notification";
 
 export default function App(props) {
     return (
         <BrowserRouter>
             <Appnavbar></Appnavbar>
+            <Notification />
             <Routes>
                 <Route
                     exact

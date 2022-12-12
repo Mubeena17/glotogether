@@ -1,5 +1,6 @@
 import { io } from "socket.io-client";
 import { getMessage, newMessage } from "./redux/chatslice";
+import { showToast, hideToast } from "./redux/notificationslice";
 
 export let socket;
 export const init = (store) => {
@@ -15,6 +16,15 @@ export const init = (store) => {
         socket.on("newMessage", (data) => {
             console.log("here the data ", data);
             store.dispatch(newMessage(data));
+        });
+
+        socket.on("newRequest", (data) => {
+            console.log(data);
+            store.dispatch(showToast(data));
+
+            setTimeout(() => {
+                store.dispatch(hideToast());
+            }, "4000");
         });
     }
 };

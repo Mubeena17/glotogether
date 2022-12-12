@@ -8,6 +8,7 @@ import bioReducer from "./bioSlice";
 import counterReducer from "./counterslice";
 import friendReducer from "./friendslice";
 import chatReducer from "./chatslice";
+import notificationReducer from "./notificationslice";
 
 const immutableInvariantMiddleware = createImmutableStateInvariantMiddleware(
     {}
@@ -23,6 +24,7 @@ const store = configureStore({
         counter: counterReducer,
         friends: friendReducer,
         chat: chatReducer,
+        notification: notificationReducer,
     },
     middleware: [immutableInvariantMiddleware, thunkMiddleware],
 });
@@ -51,6 +53,12 @@ export type Statetype = {
             profileurl: string;
             text: string;
         }[];
+    };
+    notification: {
+        toast: {
+            show: boolean;
+            data: string;
+        };
     };
 };
 export default store;

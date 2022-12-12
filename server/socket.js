@@ -1,14 +1,36 @@
-const { getMessages, insertNewMessage } = require("./db");
+const { getMessages, insertNewMessage, getUserInfo } = require("./db");
 
 module.exports = (io) => {
     let loggedUser = [];
     try {
         io.on("connection", async (socket) => {
             console.log(`socket with the id ${socket.id} is now connected`);
-            var userId = await socket.request.session.user_id;
-            console.log("userId: " + userId);
+            var userId = socket.request.session.user_id;
 
-            //get data from db
+            loggedUser.push({ userId, socketId: socket.id });
+            console.log("loge", loggedUser);
+            //friend request notification
+            socket.on("Friendrequest", async (receiverId) => {
+                console.log(
+                    "sender, recieverID",
+                    socket.request.session.user_id,
+                    receiverId
+                );
+                let reciever = loggedUser.find((user) => {
+                    return user.userId == receiverId;
+                });
+
+                if (reciever) {
+                    let sender = await getUserInfo(
+                        socket.request.session.user_id
+                    );
+                    io.to(reciever.socketId).emit(
+                        "newRequest",
+                        `New request from ${sender.firstname}${sender.lastname}`
+                    );
+                }
+            });
+
             try {
                 let message = await getMessages();
                 socket.emit("chatMessage", message);
@@ -32,6 +54,9 @@ module.exports = (io) => {
                 console.log(
                     `socket with the id ${socket.id} is now disconnected`
                 );
+                loggedUser = loggedUser.filter((user) => {
+                    return user.socketId !== socket.id;
+                });
             });
         });
     } catch (err) {

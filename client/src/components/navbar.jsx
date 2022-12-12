@@ -22,8 +22,6 @@ export default function Appnavbar() {
                 </Navbar.Brand>
 
                 <Link to="/find">Find people</Link>
-                <Link to="/random">Random</Link>
-
                 <Link to="/friends">My Friends</Link>
                 <Link to="/chat">Chats</Link>
 
