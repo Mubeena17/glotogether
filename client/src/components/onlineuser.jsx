@@ -15,18 +15,6 @@ import { useDispatch, useSelector } from "react-redux";
 export default function Onlineuser() {
     const onlineuser = useSelector((state) => state.onlineuser);
     const [filteredUsers, setFilteredUsers] = useState();
-    // console.log({ onlineuser });
-    // try {
-    //     fetch("/user/id.json")
-    //         .then((result) => result.json())
-    //         .then((user) => {
-    //             onlineuser = onlineuser.filter((item) => {
-    //                 return item.id != user.user_id;
-    //             });
-    //         });
-    // } catch (e) {
-    //     console.log(e.message);
-    // }
 
     useEffect(() => {
         if (onlineuser) {

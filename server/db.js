@@ -1,10 +1,9 @@
 const spicedPg = require("spiced-pg");
-
-const user = "mubeena";
-const password = "12345";
-const database = "social";
-
-const db = spicedPg(`postgres:${user}:${password}@localhost:5432/${database}`);
+require("dotenv").config();
+const db = spicedPg(
+    process.env.DATABASE_URL ||
+        `postgres:${process.env.USER}:${process.env.PASS}@localhost:5432/${process.env.DATABASE}`
+);
 
 module.exports.registerUser = ({ firstName, lastName, email, password }) => {
     return db

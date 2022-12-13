@@ -31,7 +31,7 @@ const Chat = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const message = e.target.message.value;
-        socket.emit("message", message);
+        if (message) socket.emit("message", message);
         e.target.message.value = "";
     };
     return (

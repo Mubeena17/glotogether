@@ -34,6 +34,7 @@ module.exports = (io) => {
             //online user list
             emitOnlineuserlist(loggedUser, socket);
 
+            //public chat
             try {
                 let message = await getMessages();
                 socket.emit("chatMessage", message);
@@ -64,7 +65,6 @@ module.exports = (io) => {
                     return user.socketId !== socket.id;
                 });
                 io.emit("useroffline", disconnectedUserid);
-                //emitOnlineuserlist(loggedUser, socket);
             });
         });
     } catch (err) {
