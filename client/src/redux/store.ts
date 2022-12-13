@@ -4,7 +4,6 @@ import {
 } from "@reduxjs/toolkit";
 import thunkMiddleware from "redux-thunk";
 //import { createLogger } from "redux-logger";
-import bioReducer from "./bioSlice";
 import counterReducer from "./counterslice";
 import friendReducer from "./friendslice";
 import chatReducer from "./chatslice";
@@ -21,7 +20,6 @@ if (process.env.NODE_ENV === "development") {
 }
 const store = configureStore({
     reducer: {
-        bio: bioReducer,
         counter: counterReducer,
         friends: friendReducer,
         chat: chatReducer,
@@ -32,12 +30,6 @@ const store = configureStore({
 });
 
 export type Statetype = {
-    bio: {
-        biotext: string;
-    };
-    counter: {
-        counter: number;
-    };
     friends: {
         friends: {
             id: number;

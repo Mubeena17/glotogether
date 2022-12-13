@@ -2,7 +2,7 @@ import ProfileApp from "./profileapp";
 import Findpeople from "./findpeople";
 import Otherprofile from "./otherprofile";
 import Friends from "./friends";
-import Random from "./random";
+
 import Chat from "./Chat";
 import Onlineuser from "./onlineuser";
 import Appnavbar from "./navbar";
