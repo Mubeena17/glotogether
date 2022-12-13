@@ -37,9 +37,11 @@ app.use(authRouter);
 app.use(resetRouter);
 app.use(userInfoRouter);
 app.use(friendshipRouter);
+app.get("/favicon.ico", function (req, res, next) {
+    next();
+});
 
 app.get("*", function (req, res) {
-    console.log();
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 
