@@ -26,7 +26,7 @@ export default function App(props) {
                     path="/otherprofile/:id"
                     element={<Otherprofile />}
                 ></Route>
-                <Route path="/random" element={<Random />}></Route>
+
                 <Route path="/friends" element={<Friends />}></Route>
                 <Route path="/chat" element={<Chat />}></Route>
                 <Route path="/online" element={<Onlineuser />}></Route>
